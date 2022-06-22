@@ -1,0 +1,195 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Example</title><meta name="generator" content="MATLAB 8.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-11-02"><meta name="DC.source" content="Example.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#1">Shear Force &amp; Bending Moment Examples</a></li><li><a href="#2">How to call the function</a></li><li><a href="#3">First Argument</a></li><li><a href="#4">Second Argument</a></li><li><a href="#5">-Cantilever</a></li><li><a href="#6">-Beam on the floor</a></li><li><a href="#7">Third argument and on</a></li><li><a href="#8">Examples</a></li><li><a href="#9">Moment(Torque)</a></li><li><a href="#10">Concentrated Load(Torque)</a></li><li><a href="#11">Distributed Force</a></li><li><a href="#12">Note</a></li></ul></div><h2>Shear Force &amp; Bending Moment Examples<a name="1"></a></h2><pre class="codeinput"><span class="comment">%     This program calculates the shear force and bending moment profiles, draw</span>
+<span class="comment">%     the free body, shear force and bending moment diagrams of the problem.</span>
+<span class="comment">%</span>
+<span class="comment">%     Under the free body diagram, the equations of each section is clearly</span>
+<span class="comment">%     written with Latex</span>
+<span class="comment">%</span>
+</pre><h2>How to call the function<a name="2"></a></h2><pre>   To use this program, you call the function placing the arguments in cells
+   with keywords at the beginning of each cell except for the first 2 arguments.</pre><h2>First Argument<a name="3"></a></h2><pre>   The first argument is the name of the problem as a string e.g.: 'PROB 1'.</pre><h2>Second Argument<a name="4"></a></h2><pre>   -Simply supported beam
+   The second argument is a row vector containing length of the beam and
+   location of the supports, for example, if the length of the beam is 20m and
+   has 2 supports, one at 3m and the other at 17m, the second argument will
+   thus be: [20, 3, 17]</pre><h2>-Cantilever<a name="5"></a></h2><pre>   If the problem is a cantilever problem, then you have only one clamped
+   support, at the beginning or end of the beam. In such a case, the number is
+   second argument contains 2 elements instead of three. For instance, fir a
+   cantilever of length 20m, supported at the beginning, the second argument
+   would be [20,0], and if supported at the end, we have [20,20].</pre><h2>-Beam on the floor<a name="6"></a></h2><pre>   Its possible to have a problem in which the body is lying on the floor
+   without any point support. In such scenario, the second argument will just
+   be the length of the beam</pre><h2>Third argument and on<a name="7"></a></h2><pre>   From the third argument and onward, we use cells. The first element of the
+   cell contains a keyword describing what type of load is inside the argument.
+   The second element is the magnitude of the load while, the third element of
+    a cell argument is its location.</pre><pre>   Keywords: Point Load       = 'CF'
+             Moment           = 'M'
+             Distributed Load = 'DF'</pre><pre>   To add a downward point load of magnitude 5N at location 4m, the argument
+   would be {'CF',-5,4}. Note the negative sign. If the force is acting upward
+   the argument would be {'CF',5,4};</pre><h2>Examples<a name="8"></a></h2><h2>Moment(Torque)<a name="9"></a></h2><pre>   To add a clockwise moment of magnitude 10N-m at location 14m, the argument
+   would be {'M',-10,14}. Note the negative sign. If the moment is anticlockwise
+   the argument would be {'M',10,14};</pre><h2>Concentrated Load(Torque)<a name="10"></a></h2><pre>   To add a downward force of magnitude 10N at location 14m, the argument
+   would be {'CF',-10,14}. Note the negative sign. If the moment is
+   upward the argument would be {'CF',10,14};</pre><h2>Distributed Force<a name="11"></a></h2><pre>   To add distributed load we need to describe all of them with the minimum
+   number of point required to describe the profile with the highest
+   complexity. For example,  {'DF',[5,5],[2,10]}, or {'DF',[1,4,5],[2,8,10]}
+   There is no limit to the number degree of polynomial that can be used.</pre><h2>Note<a name="12"></a></h2><pre>   its is important that all concentrated loads and torques are listed in the
+   order of locations</pre><pre class="codeinput"><span class="comment">%Problem Name</span>
+Name = <span class="string">'Prob 200'</span>;
+<span class="comment">% Length and Supports</span>
+LengthSupport = [20,5,20]; <span class="comment">% length  = 20m, supports at 5m and 20m;</span>
+<span class="comment">% Concetrated Loads</span>
+F1 = {<span class="string">'CF'</span>,-2,0};  <span class="comment">% 2N downward at point 0</span>
+<span class="comment">% Torques</span>
+T1 = {<span class="string">'M'</span>,10,8}; T2 = {<span class="string">'M'</span>,-10,12}; <span class="comment">% ACW 10Nm at point 8m and CW 10Nm at point 12</span>
+<span class="comment">% Distributed Loads</span>
+D1 = {<span class="string">'DF'</span>,5,[1,3]}; D2 = {<span class="string">'DF'</span>,-4,[14,17]}; <span class="comment">% Constant 5N/m upwards from 1m to 3m and Constant 4N/m downwards from 14m to 17m</span>
+<span class="comment">% Call the function</span>
+SFBM(Name,LengthSupport,F1,T1,D1,T2,D2);
+</pre><img vspace="5" hspace="5" src="Example_01.png" alt=""> <img vspace="5" hspace="5" src="Example_02.png" alt=""> <p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2015a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% Shear Force & Bending Moment Examples
+
+%     This program calculates the shear force and bending moment profiles, draw 
+%     the free body, shear force and bending moment diagrams of the problem.
+% 
+%     Under the free body diagram, the equations of each section is clearly 
+%     written with Latex
+% 
+%% How to call the function
+%     To use this program, you call the function placing the arguments in cells
+%     with keywords at the beginning of each cell except for the first 2 arguments.
+% 
+%%     First Argument
+%     The first argument is the name of the problem as a string e.g.: 'PROB 1'.
+% 
+%%     Second Argument
+%     -Simply supported beam
+%     The second argument is a row vector containing length of the beam and 
+%     location of the supports, for example, if the length of the beam is 20m and 
+%     has 2 supports, one at 3m and the other at 17m, the second argument will 
+%     thus be: [20, 3, 17]
+% 
+%%     -Cantilever
+%     If the problem is a cantilever problem, then you have only one clamped 
+%     support, at the beginning or end of the beam. In such a case, the number is
+%     second argument contains 2 elements instead of three. For instance, fir a 
+%     cantilever of length 20m, supported at the beginning, the second argument 
+%     would be [20,0], and if supported at the end, we have [20,20].
+
+%%     -Beam on the floor
+%     Its possible to have a problem in which the body is lying on the floor 
+%     without any point support. In such scenario, the second argument will just 
+%     be the length of the beam 
+% 
+%%     Third argument and on
+%     From the third argument and onward, we use cells. The first element of the 
+%     cell contains a keyword describing what type of load is inside the argument.
+%     The second element is the magnitude of the load while, the third element of
+%      a cell argument is its location.
+% 
+%     Keywords: Point Load       = 'CF'
+%               Moment           = 'M'
+%               Distributed Load = 'DF'
+% 
+%     To add a downward point load of magnitude 5N at location 4m, the argument 
+%     would be {'CF',-5,4}. Note the negative sign. If the force is acting upward
+%     the argument would be {'CF',5,4};
+
+%%     Examples
+%% Moment(Torque)
+%     To add a clockwise moment of magnitude 10N-m at location 14m, the argument 
+%     would be {'M',-10,14}. Note the negative sign. If the moment is anticlockwise
+%     the argument would be {'M',10,14};
+%% Concentrated Load(Torque)
+%     To add a downward force of magnitude 10N at location 14m, the argument 
+%     would be {'CF',-10,14}. Note the negative sign. If the moment is
+%     upward the argument would be {'CF',10,14};
+%% Distributed Force
+%     To add distributed load we need to describe all of them with the minimum 
+%     number of point required to describe the profile with the highest 
+%     complexity. For example,  {'DF',[5,5],[2,10]}, or {'DF',[1,4,5],[2,8,10]} 
+%     There is no limit to the number degree of polynomial that can be used. 
+
+%% Note
+%     its is important that all concentrated loads and torques are listed in the 
+%     order of locations 
+
+%Problem Name
+Name = 'Prob 200';
+% Length and Supports
+LengthSupport = [20,5,20]; % length  = 20m, supports at 5m and 20m;
+% Concetrated Loads
+F1 = {'CF',-2,0};  % 2N downward at point 0
+% Torques
+T1 = {'M',10,8}; T2 = {'M',-10,12}; % ACW 10Nm at point 8m and CW 10Nm at point 12
+% Distributed Loads
+D1 = {'DF',5,[1,3]}; D2 = {'DF',-4,[14,17]}; % Constant 5N/m upwards from 1m to 3m and Constant 4N/m downwards from 14m to 17m
+% Call the function
+SFBM(Name,LengthSupport,F1,T1,D1,T2,D2);
+##### SOURCE END #####
+--></body></html>
