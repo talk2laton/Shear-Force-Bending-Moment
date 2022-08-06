@@ -95,17 +95,17 @@ Name = 'Example 3';
 % Length and Supports
 LengthSupport = [30,0,20]; % length  = 20m, supports at 5m and 20m;
 % Concetrated Loads
-F1 = {'CF',-20,6}; F2 = {'CF',-10,13}; F3 = {'CF',5,27}; % 5N and 10N downward at point 3, and 13
+F1 = {'CF',-5,6}; F2 = {'CF',-10,13}; F3 = {'CF',15,15}; % 5N and 10N downward at point 3, and 13
 % Torques
-T1 = {'M',50,8}; T2 = {'M',-45,25}; % ACW 50Nm at point 8m, CW 20Nm at point 12,  CW 25Nm at point 17m
+T1 = {'M',10,8}; T2 = {'M',-10,12}; T2 = {'M',5,17}; % ACW 10Nm at point 8m, CW 10Nm at point 12,  ACW 5Nm at point 8m
 % Distributed Loads
-D1 = {'DF',7,[1,3]}; D2 = {'DF',-5,[12,18]}; % Constant 5N/m upwards from 1m to 3m and Constant 4N/m downwards from 14m to 17m
+D1 = {'DF',5,[1,3]}; D2 = {'DF',-4,[14,17]}; % Constant 5N/m upwards from 1m to 3m and Constant 4N/m downwards from 14m to 17m
 % Call the function
-SFBM(Name,LengthSupport,F1,F2, F3, T1,D1,T2,D2);
+SFBM(Name,LengthSupport,F1,T1,D1,T2,D2);
 
 %%     Example(4)
 %Problem Name
-Name = 'Example 4';
+Name = 'Prob 200';
 % Length and Supports
 LengthSupport = [20,5,20]; % length  = 20m, supports at 5m and 20m;
 % Concetrated Loads

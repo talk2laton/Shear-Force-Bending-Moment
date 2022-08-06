@@ -167,6 +167,6 @@ for n = 1:NP + 2
     end
 end
 SpecialPoints(X, ShearF, BendM);
-Diagrams(X, ShearF, BendM)
+Diagrams(Supports, X, ShearF, BendM)
 varargout = {X, ShearF, BendM};
 end
