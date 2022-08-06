@@ -58,17 +58,31 @@ ax2 = axes('Position',[0.02,0.320,0.96,0.330],'Visible','off');
 ax3 = axes('Position',[0.02,0.020,0.96,0.300],'Visible','off');
 axes(ax1)
 axis([-0.5, 5.5, -1, 1]); axis equal; axis off;  hold on
-[Xt,Yt, Xr, Yr] = makesupport1([Supports(1)*5/x(end),0], 0.1, 0);
-fill(Xt,Yt,'k','LineWidth',1.5, 'FaceAlpha', 0.5);
-fill(Xr,Yr,'k','LineWidth',1.5, 'FaceAlpha', 0.3);
-[Xt,Yt, Xr, Yr, Xl, Yl, Xc, Yc] = makesupport2([Supports(2)*5/x(end),0], 0.1, 0);
-fill(Xt,Yt,'k','LineWidth',1.5, 'FaceAlpha', 0.5);
-fill(Xr,Yr,'k','LineWidth',1.5, 'FaceAlpha', 0.3);
-fill(Xl,Yl,'k','LineWidth',1.5, 'FaceAlpha', 0.3);
-arrayfun(@(n) fill(Xc(n,:),Yc(n,:),'k','LineWidth',1.5, 'FaceAlpha', 0.3), 1:size(Xc,1));
-fill(5*[0,0,1,1],0.05*[-1,1,1,-1],'b','LineWidth',1.5, 'FaceAlpha', 0.5)
-plot(Supports(1)*5/x(end),0, 'or', MarkerFaceColor = 'r'); 
-plot(Supports(2)*5/x(end),0,'or', MarkerFaceColor = 'r');
+if(numel(Supports) == 2)
+    [Xt,Yt, Xr, Yr] = makesupport1([Supports(1)*5/x(end),0], 0.1, 0);
+    fill(Xt,Yt,'k','LineWidth',1.5, 'FaceAlpha', 0.5);
+    fill(Xr,Yr,'k','LineWidth',1.5, 'FaceAlpha', 0.3);
+    [Xt,Yt, Xr, Yr, Xl, Yl, Xc, Yc] = makesupport2([Supports(2)*5/x(end),0], 0.1, 0);
+    fill(Xt,Yt,'k','LineWidth',1.5, 'FaceAlpha', 0.5);
+    fill(Xr,Yr,'k','LineWidth',1.5, 'FaceAlpha', 0.3);
+    fill(Xl,Yl,'k','LineWidth',1.5, 'FaceAlpha', 0.3);
+    arrayfun(@(n) fill(Xc(n,:),Yc(n,:),'k','LineWidth',1.5, 'FaceAlpha', 0.3), 1:size(Xc,1));
+else
+    tt = pi*linspace(0.5,1.5,100); R = 0.5+0.05*rand(1,100);
+    xx = R.*cos(tt); yy = R.*sin(tt);
+    xs = Supports;
+    if(xs == 0)
+        fill(xx,yy,'k','LineWidth',0.01, 'FaceAlpha', 0.2);
+    else
+        fill(xs-xx,yy,'k','LineWidth',0.01, 'FaceAlpha', 0.2);
+    end
+    plot([xs,xs], 0.5*[-1,1],'k', 'LineWidth',1.5);
+end
+fill(5*[0,0,1,1],0.05*[-1,1,1,-1],'b','LineWidth',1.5, 'FaceAlpha', 0.5);
+if(numel(Supports) == 2)
+    plot(Supports(1)*5/x(end),0, 'or', MarkerFaceColor = 'r'); 
+    plot(Supports(2)*5/x(end),0,'or', MarkerFaceColor = 'r');
+end
 axes(ax2)
 fill(5*[0,0,1,1],0.05*[-1,1,1,-1],'b','LineWidth',1.5, 'FaceAlpha', 0.5)
 axis([-0.5, 5.5, -1, 1]); axis equal; hold on
@@ -164,6 +178,11 @@ for n = 1:nm
     t      = sign(Mload{n})*[-3*pi/4,3*pi/4];
     t1     = t(1);
     t2     = t(2);
+
+    if TypeM(n) == 'a'
+        text(ax1, Mloc{n}*5/x(end),0.3*sign(Mload{n}),[num2str(abs(Mload{n}),'%.2f'),'KN-m'], 'FontWeight','bold', 'HorizontalAlignment','center', 'interpreter','latex')
+    end
+    text(ax2, Mloc{n}*5/x(end),0.3*sign(Mload{n}),[num2str(abs(Mload{n}),'%.2f'),'KN-m'], 'FontWeight','bold', 'HorizontalAlignment','center', 'interpreter','latex')
     
     if TypeM(n) == 'a'
         if(nma == 0)
@@ -188,8 +207,6 @@ for n = 1:nm
         end
         plot(Mloc{n}*5/x(end),0,'ok','markersize',15,'markerfacecolor','r')
     end
-    text(ax1, Mloc{n}*5/x(end),0.3*sign(Mload{n}),[num2str(abs(Mload{n}),'%.2f'),'KN-m'], 'FontWeight','bold', 'HorizontalAlignment','center', 'interpreter','latex')
-    text(ax2, Mloc{n}*5/x(end),0.3*sign(Mload{n}),[num2str(abs(Mload{n}),'%.2f'),'KN-m'], 'FontWeight','bold', 'HorizontalAlignment','center', 'interpreter','latex')
 end
 
 title(ax1, '$Problem~Diagram$', 'interpreter','latex')
