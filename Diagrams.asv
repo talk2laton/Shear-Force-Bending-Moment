@@ -1,4 +1,4 @@
-function [f1, f2] = Diagrams(x,sf,bm)
+function Diagrams(Supports, x,sf,bm)
 close all
 clc
 global Name nc nd nm Cload Dload Mload Xload Cloc Dloc Mloc Xtick YtickSF ....
@@ -29,11 +29,11 @@ YTICKBM = {};
 XLOAD   = {};
 format  = ['%.', num2str(DeciPlace), 'f'];
 for n = 1:numel(Xtick)
-    XTICK{n} = num2str(Xtick(n)/Xfactor, format);
+    XTICK{n} = num2str(Xtick(n)/Xfactor,format);
 end
 
 for n = 1:numel(Xload)
-    XLOAD{n} = num2str(Xload(n)/Xfactor, format);
+    XLOAD{n} = num2str(Xload(n)/Xfactor,format);
 end
 
 for n = 1:numel(YtickSF)
@@ -195,9 +195,9 @@ for n = 2:numel(EqRange)
     Range = [Range;{range}]; Equa1 = [Equa1;{equa1}]; Equa2 = [Equa2;{equa2}]; 
 end
 axes(ax3)
-text(0.02, 0.80, Range, 'VerticalAlignment', 'cap', 'FontSize', 12, 'interpreter', 'latex')
-text(0.15, 0.80, Equa1, 'VerticalAlignment', 'cap', 'FontSize', 12, 'interpreter', 'latex')
-text(0.50, 0.80, Equa2, 'VerticalAlignment', 'cap', 'FontSize', 12, 'interpreter', 'latex')
+text(0.15, 0.80, Range, 'VerticalAlignment', 'cap', 'FontSize', 12, 'interpreter', 'latex')
+text(0.30, 0.80, Equa1, 'VerticalAlignment', 'cap', 'FontSize', 12, 'interpreter', 'latex')
+text(0.65, 0.80, Equa2, 'VerticalAlignment', 'cap', 'FontSize', 12, 'interpreter', 'latex')
 f1 = getframe(gcf);
 %%
 h2 = figure(Color = 'w');
@@ -263,7 +263,9 @@ for n = 1:numel(YtickBM)
     h4 = annotation('line',[xb2(n) xc2(n)],[yb2(n) yc2(n)],'Tag' , 'connect1');
     set(h4,'LineStyle','--'); set(h4,'Color','b'); 
 end
-f2 = getframe(gcf);
+
+f2 = getframe(gcf); F = [f1.cdata,f2.cdata]; 
+imwrite(F, Name+".png");
 
 function [Xt,Yt, Xr, Yr] = makesupport1(Node, t, n)
 t    = 0.7*t; y = 4*t; x = t*cos(pi/6)*5.5/1.5;

@@ -6,8 +6,8 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>Example</title><meta name="generator" content="MATLAB 8.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-11-02"><meta name="DC.source" content="Example.m"><style type="text/css">
-html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+      --><title>Example</title><meta name="generator" content="MATLAB 9.12"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2023-05-27"><meta name="DC.source" content="Example.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
 html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
@@ -23,7 +23,7 @@ a:visited { color:#004aa0; text-decoration:none; }
 
 p { padding:0px; margin:0px 0px 20px; }
 img { padding:0px; margin:0px 0px 20px; border:none; }
-p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
 
 ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
 ul li { padding:0px; margin:0px 0px 7px 0px; }
@@ -52,6 +52,7 @@ span.comment { color:#228B22 }
 span.string { color:#A020F0 }
 span.untermstring { color:#B20000 }
 span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
 
 .footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
 .footer p { margin:0px; }
@@ -66,74 +67,196 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#1">Shear Force &amp; Bending Moment Examples</a></li><li><a href="#2">How to call the function</a></li><li><a href="#3">First Argument</a></li><li><a href="#4">Second Argument</a></li><li><a href="#5">-Cantilever</a></li><li><a href="#6">-Beam on the floor</a></li><li><a href="#7">Third argument and on</a></li><li><a href="#8">Examples</a></li><li><a href="#9">Moment(Torque)</a></li><li><a href="#10">Concentrated Load(Torque)</a></li><li><a href="#11">Distributed Force</a></li><li><a href="#12">Note</a></li></ul></div><h2>Shear Force &amp; Bending Moment Examples<a name="1"></a></h2><pre class="codeinput"><span class="comment">%     This program calculates the shear force and bending moment profiles, draw</span>
-<span class="comment">%     the free body, shear force and bending moment diagrams of the problem.</span>
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#1">Shear Force &amp; Bending Moment Examples</a></li><li><a href="#2">How to call the function</a></li><li><a href="#3">How to create the SFBMProb object</a></li><li><a href="#4">Load Description</a></li><li><a href="#5">How to add loads to the object.</a></li><li><a href="#6">-Moment(Torque)</a></li><li><a href="#7">-Concentrated Load(Torque)</a></li><li><a href="#8">-Distributed Force</a></li><li><a href="#9">-Cantilever</a></li><li><a href="#10">-Beam on the floor</a></li><li><a href="#11">Third argument and on</a></li><li><a href="#12">Example(1)</a></li><li><a href="#13">Example(2)</a></li><li><a href="#14">Example(3)</a></li><li><a href="#15">Example(4)</a></li><li><a href="#16">Example(4)</a></li></ul></div><h2 id="1">Shear Force &amp; Bending Moment Examples</h2><pre class="codeinput"><span class="comment">%     This program calculates the shear force and bending moment profiles,</span>
+<span class="comment">%     draws the free body, shear force and bending moment diagrams of the</span>
+<span class="comment">%     problem.</span>
 <span class="comment">%</span>
 <span class="comment">%     Under the free body diagram, the equations of each section is clearly</span>
 <span class="comment">%     written with Latex</span>
 <span class="comment">%</span>
-</pre><h2>How to call the function<a name="2"></a></h2><pre>   To use this program, you call the function placing the arguments in cells
-   with keywords at the beginning of each cell except for the first 2 arguments.</pre><h2>First Argument<a name="3"></a></h2><pre>   The first argument is the name of the problem as a string e.g.: 'PROB 1'.</pre><h2>Second Argument<a name="4"></a></h2><pre>   -Simply supported beam
+</pre><h2 id="2">How to call the function</h2><pre>   To use this program, you need to call the solve function on the instance
+   of the SFBMProb object that has the complete problem description.
+   You first create the SFBMProb Object and then add the loads in no
+   partcular order.</pre><h2 id="3">How to create the SFBMProb object</h2><pre>   create an instance of SFBMProb by calling "SFBMProb" with three
+   arguments. The first in the name of the problem. For instance, "Example 1".
+   the second argument is Length of the beam, and the third is locations
+   of the supports.</pre><pre>   SFBMProb(name, length, supports)</pre><h2 id="4">Load Description</h2><pre>   Loads can be Force: such point or distributed load, or Torque the we
+   call Moment here. In general Load would have value and location.
+   The sign of the value can indicate whether it is pointing upwards, or
+   downwards in the case of force, or clockwise/anticlockwise in case of
+   moment. While moment and point load have scalars for value and
+   location, distributed load have vector of value and location.</pre><h2 id="5">How to add loads to the object.</h2><pre>   -Simply supported beam
    The second argument is a row vector containing length of the beam and
    location of the supports, for example, if the length of the beam is 20m and
    has 2 supports, one at 3m and the other at 17m, the second argument will
-   thus be: [20, 3, 17]</pre><h2>-Cantilever<a name="5"></a></h2><pre>   If the problem is a cantilever problem, then you have only one clamped
+   thus be: [20, 3, 17]</pre><h2 id="6">-Moment(Torque)</h2><pre>     To add a clockwise moment of magnitude 10N-m at location 14m, the argument
+     would be {'M',-10,14}. Note the negative sign. If the moment is anticlockwise
+     the argument would be {'M',10,14};</pre><h2 id="7">-Concentrated Load(Torque)</h2><pre>     To add a downward force of magnitude 10N at location 14m, the argument
+     would be {'CF',-10,14}. Note the negative sign. If the moment is
+     upward the argument would be {'CF',10,14};</pre><h2 id="8">-Distributed Force</h2><pre>     To add distributed load we need to describe all of them with the minimum
+     number of point required to describe the profile with the highest
+     complexity. For example,  {'DF',[5,5],[2,10]}, or {'DF',[1,4,5],[2,8,10]}
+     There is no limit to the number degree of polynomial that can be used.</pre><h2 id="9">-Cantilever</h2><pre>   If the problem is a cantilever problem, then you have only one clamped
    support, at the beginning or end of the beam. In such a case, the number is
    second argument contains 2 elements instead of three. For instance, fir a
    cantilever of length 20m, supported at the beginning, the second argument
-   would be [20,0], and if supported at the end, we have [20,20].</pre><h2>-Beam on the floor<a name="6"></a></h2><pre>   Its possible to have a problem in which the body is lying on the floor
+   would be [20,0], and if supported at the end, we have [20,20].</pre><h2 id="10">-Beam on the floor</h2><pre>   Its possible to have a problem in which the body is lying on the floor
    without any point support. In such scenario, the second argument will just
-   be the length of the beam</pre><h2>Third argument and on<a name="7"></a></h2><pre>   From the third argument and onward, we use cells. The first element of the
+   be the length of the beam</pre><h2 id="11">Third argument and on</h2><pre>   From the third argument and onward, we use cells. The first element of the
    cell contains a keyword describing what type of load is inside the argument.
    The second element is the magnitude of the load while, the third element of
     a cell argument is its location.</pre><pre>   Keywords: Point Load       = 'CF'
              Moment           = 'M'
              Distributed Load = 'DF'</pre><pre>   To add a downward point load of magnitude 5N at location 4m, the argument
    would be {'CF',-5,4}. Note the negative sign. If the force is acting upward
-   the argument would be {'CF',5,4};</pre><h2>Examples<a name="8"></a></h2><h2>Moment(Torque)<a name="9"></a></h2><pre>   To add a clockwise moment of magnitude 10N-m at location 14m, the argument
-   would be {'M',-10,14}. Note the negative sign. If the moment is anticlockwise
-   the argument would be {'M',10,14};</pre><h2>Concentrated Load(Torque)<a name="10"></a></h2><pre>   To add a downward force of magnitude 10N at location 14m, the argument
-   would be {'CF',-10,14}. Note the negative sign. If the moment is
-   upward the argument would be {'CF',10,14};</pre><h2>Distributed Force<a name="11"></a></h2><pre>   To add distributed load we need to describe all of them with the minimum
-   number of point required to describe the profile with the highest
-   complexity. For example,  {'DF',[5,5],[2,10]}, or {'DF',[1,4,5],[2,8,10]}
-   There is no limit to the number degree of polynomial that can be used.</pre><h2>Note<a name="12"></a></h2><pre>   its is important that all concentrated loads and torques are listed in the
-   order of locations</pre><pre class="codeinput"><span class="comment">%Problem Name</span>
-Name = <span class="string">'Prob 200'</span>;
+   the argument would be {'CF',5,4};</pre><h2 id="12">Example(1)</h2><pre class="codeinput"><span class="comment">% Problem Name</span>
+Name = <span class="string">'Example 1'</span>;
+
 <span class="comment">% Length and Supports</span>
-LengthSupport = [20,5,20]; <span class="comment">% length  = 20m, supports at 5m and 20m;</span>
+Length = 10; Supports = [2, 10]; <span class="comment">% length  = 10m, supports at 2m and 10m;</span>
+prob = SFBMProb(Name, Length, Supports);
+
 <span class="comment">% Concetrated Loads</span>
-F1 = {<span class="string">'CF'</span>,-2,0};  <span class="comment">% 2N downward at point 0</span>
+prob.AddPointLoad(-5, 0); <span class="comment">% 5N downward at point 0</span>
+prob.AddPointLoad(-10, 8); <span class="comment">% 10N downward at point 8</span>
+
 <span class="comment">% Torques</span>
-T1 = {<span class="string">'M'</span>,10,8}; T2 = {<span class="string">'M'</span>,-10,12}; <span class="comment">% ACW 10Nm at point 8m and CW 10Nm at point 12</span>
+prob.AddMoment(10, 3);  <span class="comment">% ACW 10Nm at point 3</span>
+prob.AddMoment(-10, 7); <span class="comment">% CW 10Nm at point 7</span>
+
+<span class="comment">% Solve the problem</span>
+prob.Solve()
+</pre><img vspace="5" hspace="5" src="Example_01.png" alt=""> <img vspace="5" hspace="5" src="Example_02.png" alt=""> <h2 id="13">Example(2)</h2><p>Problem Name</p><pre class="codeinput">Name = <span class="string">'Example 2'</span>;
+
+<span class="comment">% Length and Supports</span>
+Length = 20; Supports = [5,20]; <span class="comment">% length  = 20m, supports at 5m and 20m;</span>
+prob = SFBMProb(Name, Length, Supports);
+
+<span class="comment">% Concentrated Loads</span>
+prob.AddPointLoad(-5,6);   <span class="comment">% 5N downward at point 6</span>
+prob.AddPointLoad(-10,13); <span class="comment">% 10N downward at point 13</span>
+
 <span class="comment">% Distributed Loads</span>
-D1 = {<span class="string">'DF'</span>,5,[1,3]}; D2 = {<span class="string">'DF'</span>,-4,[14,17]}; <span class="comment">% Constant 5N/m upwards from 1m to 3m and Constant 4N/m downwards from 14m to 17m</span>
-<span class="comment">% Call the function</span>
-SFBM(Name,LengthSupport,F1,T1,D1,T2,D2);
-</pre><img vspace="5" hspace="5" src="Example_01.png" alt=""> <img vspace="5" hspace="5" src="Example_02.png" alt=""> <p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2015a</a><br></p></div><!--
+prob.AddDistLoad([5,5],[1,3]);    <span class="comment">% Constant 5N/m upwards from 1m to 3m</span>
+prob.AddDistLoad([-4,-4],[14,17]); <span class="comment">% Constant 4N/m downwards from 14m to 17m</span>
+
+<span class="comment">% Solve the problem</span>
+prob.Solve()
+</pre><img vspace="5" hspace="5" src="Example_03.png" alt=""> <img vspace="5" hspace="5" src="Example_04.png" alt=""> <h2 id="14">Example(3)</h2><pre class="codeinput"><span class="comment">%Problem Name</span>
+Name = <span class="string">'Example 3'</span>;
+<span class="comment">% Length and Supports</span>
+Length = 30; Supports = [0,20]; <span class="comment">% length  = 30m, supports at 0m and 20m;</span>
+prob = SFBMProb(Name, Length, Supports);
+
+<span class="comment">% Concentrated Loads</span>
+prob.AddPointLoad(-20, 6);   <span class="comment">% 20N downward at point 6</span>
+prob.AddPointLoad(-10, 13);  <span class="comment">% 10N downward at point 13</span>
+prob.AddPointLoad(5, 27);    <span class="comment">% 5N upward at point 27</span>
+
+<span class="comment">% Torques</span>
+prob.AddMoment(50, 8);  <span class="comment">% ACW 50Nm at point 8</span>
+prob.AddMoment(-45, 25); <span class="comment">% CW 45Nm at point 25</span>
+
+<span class="comment">% Distributed Loads</span>
+prob.AddDistLoad([7, 7], [1,3]);    <span class="comment">% Constant 7N/m upwards from 1m to 3m</span>
+prob.AddDistLoad([-5,-5], [12,18]); <span class="comment">% Constant 5N/m downwards from 12m to 18m</span>
+
+<span class="comment">% Solve the problem</span>
+prob.Solve()
+</pre><img vspace="5" hspace="5" src="Example_05.png" alt=""> <img vspace="5" hspace="5" src="Example_06.png" alt=""> <h2 id="15">Example(4)</h2><pre class="codeinput"><span class="comment">%Problem Name</span>
+Name = <span class="string">'Example 4'</span>;
+<span class="comment">% Length and Supports</span>
+Length = 20; Supports = [5,20]; <span class="comment">% length  = 20m, supports at 5m and 20m;</span>
+prob = SFBMProb(Name, Length, Supports);
+
+<span class="comment">% Concentrated Loads</span>
+prob.AddPointLoad(-2, 0);   <span class="comment">% 2N downward at point 0</span>
+
+<span class="comment">% Torques</span>
+prob.AddMoment(50, 8);  <span class="comment">% ACW 50Nm at point 8</span>
+prob.AddMoment(-45, 15); <span class="comment">% CW 45Nm at point 15</span>
+
+<span class="comment">% Distributed Loads</span>
+prob.AddDistLoad([5, 5], [1,3]);    <span class="comment">% Constant 7N/m upwards from 1m to 3m</span>
+prob.AddDistLoad([-4, -4], [14, 17]); <span class="comment">% Constant 5N/m downwards from 12m to 18m</span>
+
+<span class="comment">% Solve the problem</span>
+prob.Solve()
+</pre><img vspace="5" hspace="5" src="Example_07.png" alt=""> <img vspace="5" hspace="5" src="Example_08.png" alt=""> <h2 id="16">Example(4)</h2><pre class="codeinput"><span class="comment">%Problem Name</span>
+Name = <span class="string">'Example 4'</span>;
+<span class="comment">% Length and Supports</span>
+Length = 20; Supports = [5,20]; <span class="comment">% length  = 20m, supports at 5m and 20m;</span>
+prob = SFBMProb(Name, Length, Supports);
+
+<span class="comment">% Concetrated Loads</span>
+prob.AddPointLoad(-2,0);  <span class="comment">% 2N downward at point 0</span>
+
+<span class="comment">% Torques</span>
+prob.AddMoment(10,8);   <span class="comment">% ACW 10Nm at point 8</span>
+prob.AddMoment(-10,12); <span class="comment">% CW 10Nm at point 12</span>
+
+<span class="comment">% Distributed Loads</span>
+prob.AddDistLoad([5,5],[1,3]);    <span class="comment">% Constant 5N/m upwards from 1m to 3m and</span>
+prob.AddDistLoad([-4,4],[14,17]); <span class="comment">% Constant 4N/m downwards from 14m to 17m</span>
+
+<span class="comment">% Solve the problem</span>
+prob.Solve()
+</pre><img vspace="5" hspace="5" src="Example_09.png" alt=""> <img vspace="5" hspace="5" src="Example_10.png" alt=""> <p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2022a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% Shear Force & Bending Moment Examples
 
-%     This program calculates the shear force and bending moment profiles, draw 
-%     the free body, shear force and bending moment diagrams of the problem.
+%     This program calculates the shear force and bending moment profiles, 
+%     draws the free body, shear force and bending moment diagrams of the 
+%     problem.
 % 
 %     Under the free body diagram, the equations of each section is clearly 
 %     written with Latex
 % 
 %% How to call the function
-%     To use this program, you call the function placing the arguments in cells
-%     with keywords at the beginning of each cell except for the first 2 arguments.
+%     To use this program, you need to call the solve function on the instance 
+%     of the SFBMProb object that has the complete problem description.
+%     You first create the SFBMProb Object and then add the loads in no
+%     partcular order. 
 % 
-%%     First Argument
-%     The first argument is the name of the problem as a string e.g.: 'PROB 1'.
-% 
-%%     Second Argument
+%% How to create the SFBMProb object
+%     create an instance of SFBMProb by calling "SFBMProb" with three
+%     arguments. The first in the name of the problem. For instance, "Example 1".
+%     the second argument is Length of the beam, and the third is locations
+%     of the supports. 
+%
+%     SFBMProb(name, length, supports)
+
+%% Load Description
+%     Loads can be Force: such point or distributed load, or Torque the we
+%     call Moment here. In general Load would have value and location.
+%     The sign of the value can indicate whether it is pointing upwards, or
+%     downwards in the case of force, or clockwise/anticlockwise in case of
+%     moment. While moment and point load have scalars for value and
+%     location, distributed load have vector of value and location. 
+
+%% How to add loads to the object.
 %     -Simply supported beam
 %     The second argument is a row vector containing length of the beam and 
 %     location of the supports, for example, if the length of the beam is 20m and 
 %     has 2 supports, one at 3m and the other at 17m, the second argument will 
 %     thus be: [20, 3, 17]
+%
+%%    -Moment(Torque)
+%       To add a clockwise moment of magnitude 10N-m at location 14m, the argument 
+%       would be {'M',-10,14}. Note the negative sign. If the moment is anticlockwise
+%       the argument would be {'M',10,14};
+%%    -Concentrated Load(Torque)
+%       To add a downward force of magnitude 10N at location 14m, the argument 
+%       would be {'CF',-10,14}. Note the negative sign. If the moment is
+%       upward the argument would be {'CF',10,14};
+%%    -Distributed Force
+%       To add distributed load we need to describe all of them with the minimum 
+%       number of point required to describe the profile with the highest 
+%       complexity. For example,  {'DF',[5,5],[2,10]}, or {'DF',[1,4,5],[2,8,10]} 
+%       There is no limit to the number degree of polynomial that can be used. 
 % 
+
+
 %%     -Cantilever
 %     If the problem is a cantilever problem, then you have only one clamped 
 %     support, at the beginning or end of the beam. In such a case, the number is
@@ -160,36 +283,110 @@ SFBM(Name,LengthSupport,F1,T1,D1,T2,D2);
 %     would be {'CF',-5,4}. Note the negative sign. If the force is acting upward
 %     the argument would be {'CF',5,4};
 
-%%     Examples
-%% Moment(Torque)
-%     To add a clockwise moment of magnitude 10N-m at location 14m, the argument 
-%     would be {'M',-10,14}. Note the negative sign. If the moment is anticlockwise
-%     the argument would be {'M',10,14};
-%% Concentrated Load(Torque)
-%     To add a downward force of magnitude 10N at location 14m, the argument 
-%     would be {'CF',-10,14}. Note the negative sign. If the moment is
-%     upward the argument would be {'CF',10,14};
-%% Distributed Force
-%     To add distributed load we need to describe all of them with the minimum 
-%     number of point required to describe the profile with the highest 
-%     complexity. For example,  {'DF',[5,5],[2,10]}, or {'DF',[1,4,5],[2,8,10]} 
-%     There is no limit to the number degree of polynomial that can be used. 
 
-%% Note
-%     its is important that all concentrated loads and torques are listed in the 
-%     order of locations 
 
-%Problem Name
-Name = 'Prob 200';
+%%     Example(1)
+
+% Problem Name
+Name = 'Example 1';
+
 % Length and Supports
-LengthSupport = [20,5,20]; % length  = 20m, supports at 5m and 20m;
+Length = 10; Supports = [2, 10]; % length  = 10m, supports at 2m and 10m;
+prob = SFBMProb(Name, Length, Supports);
+
 % Concetrated Loads
-F1 = {'CF',-2,0};  % 2N downward at point 0
+prob.AddPointLoad(-5, 0); % 5N downward at point 0
+prob.AddPointLoad(-10, 8); % 10N downward at point 8
+
 % Torques
-T1 = {'M',10,8}; T2 = {'M',-10,12}; % ACW 10Nm at point 8m and CW 10Nm at point 12
+prob.AddMoment(10, 3);  % ACW 10Nm at point 3
+prob.AddMoment(-10, 7); % CW 10Nm at point 7
+
+% Solve the problem
+prob.Solve()
+
+%%     Example(2)
+% Problem Name
+Name = 'Example 2';
+
+% Length and Supports
+Length = 20; Supports = [5,20]; % length  = 20m, supports at 5m and 20m;
+prob = SFBMProb(Name, Length, Supports);
+
+% Concentrated Loads
+prob.AddPointLoad(-5,6);   % 5N downward at point 6
+prob.AddPointLoad(-10,13); % 10N downward at point 13
+
 % Distributed Loads
-D1 = {'DF',5,[1,3]}; D2 = {'DF',-4,[14,17]}; % Constant 5N/m upwards from 1m to 3m and Constant 4N/m downwards from 14m to 17m
-% Call the function
-SFBM(Name,LengthSupport,F1,T1,D1,T2,D2);
+prob.AddDistLoad([5,5],[1,3]);    % Constant 5N/m upwards from 1m to 3m 
+prob.AddDistLoad([-4,-4],[14,17]); % Constant 4N/m downwards from 14m to 17m
+
+% Solve the problem
+prob.Solve()
+
+%%     Example(3)
+%Problem Name
+Name = 'Example 3';
+% Length and Supports
+Length = 30; Supports = [0,20]; % length  = 30m, supports at 0m and 20m;
+prob = SFBMProb(Name, Length, Supports);
+
+% Concentrated Loads
+prob.AddPointLoad(-20, 6);   % 20N downward at point 6
+prob.AddPointLoad(-10, 13);  % 10N downward at point 13
+prob.AddPointLoad(5, 27);    % 5N upward at point 27
+
+% Torques
+prob.AddMoment(50, 8);  % ACW 50Nm at point 8
+prob.AddMoment(-45, 25); % CW 45Nm at point 25
+
+% Distributed Loads
+prob.AddDistLoad([7, 7], [1,3]);    % Constant 7N/m upwards from 1m to 3m 
+prob.AddDistLoad([-5,-5], [12,18]); % Constant 5N/m downwards from 12m to 18m
+
+% Solve the problem
+prob.Solve()
+
+%%     Example(4)
+%Problem Name
+Name = 'Example 4';
+% Length and Supports
+Length = 20; Supports = [5,20]; % length  = 20m, supports at 5m and 20m;
+prob = SFBMProb(Name, Length, Supports);
+
+% Concentrated Loads
+prob.AddPointLoad(-2, 0);   % 2N downward at point 0
+
+% Torques
+prob.AddMoment(50, 8);  % ACW 50Nm at point 8
+prob.AddMoment(-45, 15); % CW 45Nm at point 15
+
+% Distributed Loads
+prob.AddDistLoad([5, 5], [1,3]);    % Constant 7N/m upwards from 1m to 3m 
+prob.AddDistLoad([-4, -4], [14, 17]); % Constant 5N/m downwards from 12m to 18m
+
+% Solve the problem
+prob.Solve()
+
+%%     Example(4)
+%Problem Name
+Name = 'Example 4';
+% Length and Supports
+Length = 20; Supports = [5,20]; % length  = 20m, supports at 5m and 20m;
+prob = SFBMProb(Name, Length, Supports);
+
+% Concetrated Loads
+prob.AddPointLoad(-2,0);  % 2N downward at point 0
+
+% Torques
+prob.AddMoment(10,8);   % ACW 10Nm at point 8
+prob.AddMoment(-10,12); % CW 10Nm at point 12
+
+% Distributed Loads
+prob.AddDistLoad([5,5],[1,3]);    % Constant 5N/m upwards from 1m to 3m and 
+prob.AddDistLoad([-4,4],[14,17]); % Constant 4N/m downwards from 14m to 17m
+
+% Solve the problem
+prob.Solve()
 ##### SOURCE END #####
 --></body></html>
