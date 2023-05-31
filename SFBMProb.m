@@ -2,6 +2,7 @@
 classdef SFBMProb < handle
     properties 
         Name              string
+        Source            string
         Length            (1, 1) double
         Supports          
         MomentLoad        (1, :) Moment
@@ -141,6 +142,14 @@ classdef SFBMProb < handle
             f1 = getframe(gcf);
             [X, ShearF, BendM, f2, f3] = SFBM(input{:});
             F = [f1.cdata, f2.cdata, f3.cdata]; 
+            if(~isempty(prob.Source))
+                imtext=text2im(char("   source = "+prob.Source));
+                [m, n] = size(imtext);
+                [~, p, ~] = size(F);
+                pad = 255*uint8(ones(3*m, p, 3));
+                pad(m+1:2*m,1:n,:) = 255*uint8(cat(3, imtext,imtext,imtext));
+                F = [F;pad];
+            end
             imwrite(F, prob.Name+".png");
         end
     end
@@ -149,34 +158,33 @@ end
 function axhandle = FreeBody(Length, Supports)
     figure(Color = 'w', Units = 'normalized', Outerposition = [0.01 0.05 0.647 0.95])
     axhandle = axes('Visible','off'); axes(axhandle);
-    axis([-0.5, 5.5, -1, 1]); axis equal; axis off;  hold on
-    if(numel(Supports) == 2)
-        [Xt,Yt, Xr, Yr] = makesupport1([Supports(1)*5/Length,0], 0.1, 0);
+    axis([-0.5, 5.5, -1, 1]); axis equal; axis off;  hold on;
+    xs = Supports*5/Length;
+    if(numel(xs) == 2)
+        [Xt,Yt, Xr, Yr] = makesupport1([xs(1), 0], 0.1, 0);
         fill(Xt,Yt,'k','LineWidth',1.5, 'FaceAlpha', 0.5);
         fill(Xr,Yr,'k','LineWidth',1.5, 'FaceAlpha', 0.3);
-        [Xt,Yt, Xr, Yr, Xl, Yl, Xc, Yc] = ...
-            makesupport2([Supports(2)*5/Length,0], 0.1, 0);
+        [Xt,Yt, Xr, Yr, Xl, Yl, Xc, Yc] = makesupport2([xs(2), 0], 0.1, 0);
         fill(Xt,Yt,'k','LineWidth',1.5, 'FaceAlpha', 0.5);
         fill(Xr,Yr,'k','LineWidth',1.5, 'FaceAlpha', 0.3);
         fill(Xl,Yl,'k','LineWidth',1.5, 'FaceAlpha', 0.3);
         arrayfun(@(n) fill(Xc(n,:),Yc(n,:),'k','LineWidth',1.5, ...
             'FaceAlpha', 0.3), 1:size(Xc,1));
-    elseif(numel(Supports) == 1)
+        plot(xs, 0, 'or', MarkerFaceColor = 'r', MarkerSize = 2); 
+    elseif(numel(xs) == 1)
         tt = pi*linspace(0.5,1.5,100); R = 0.5+0.05*rand(1,100);
-        xx = R.*cos(tt); yy = R.*sin(tt);
-        xs = Supports;
+        xx = R.*cos(tt)+0.1; yy = R.*sin(tt);
         if(xs == 0)
             fill(xx,yy,'k','LineWidth',0.01, 'FaceAlpha', 0.2);
+            plot(0.1+[xs, xs], [0.05, 0.5],'k', 'LineWidth',1.5);
+            plot(0.1+[xs, xs], -[0.05, 0.5],'k', 'LineWidth',1.5);
         else
             fill(xs-xx,yy,'k','LineWidth',0.01, 'FaceAlpha', 0.2);
+            plot(-0.1+[xs, xs], [0.05, 0.5],'k', 'LineWidth',1.5);
+            plot(-0.1+[xs, xs], -[0.05, 0.5],'k', 'LineWidth',1.5);
         end
-        plot([xs,xs], 0.5*[-1,1],'k', 'LineWidth',1.5);
     end
     fill(5*[0,0,1,1],0.05*[-1,1,1,-1],'b','LineWidth',1.5, 'FaceAlpha', 0.5);
-    if(numel(Supports) == 2)
-        plot(Supports*5/Length, 0, 'or', MarkerFaceColor = 'r', ....
-            MarkerSize = 2); 
-    end
 end
 
 function [Xt, Yt, Xr, Yr] = makesupport1(Node, t, n)

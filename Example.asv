@@ -84,8 +84,8 @@ Length = 10; Supports = [2, 10]; % length  = 10, supports at 2 and 10;
 prob = SFBMProb(Name, Length, Supports);
 
 %Set Unit
-prob.ForceUnit = "lb";
-prob.LengthUnit = "inch";
+prob.ForceUnit = 'lb';
+prob.LengthUnit = 'inch';
 
 %Concetrated Loads
 prob.AddPointLoad(-5, 0); % 5N downward at point 0
@@ -176,8 +176,55 @@ prob.AddMoment(10,8);   % ACW 10Nm at point 8
 prob.AddMoment(-15,12); % CW 10Nm at point 12
 
 % Distributed Loads
-prob.AddDistLoad([5, 2, 5], [1, 3, 5]);    % Constant 5N/m upwards from 1m to 3m and 
-prob.AddDistLoad([-4, -2, -4],[14, 16, 18]); % Constant 4N/m downwards from 14m to 17m
+prob.AddDistLoad([5, 2, 5], [1, 3, 5]);    % Quadratic profile distributed upwards force from 1m to 5m and 
+prob.AddDistLoad([-4, -2, -4],[14, 16, 18]); % Quadratic profile distributed downwards force from 14m to 18m
+
+% Solve the problem
+prob.Solve()
+
+
+%%     Example(5)
+%Problem Name
+Name = 'Example 5';
+% Length and Supports
+Length = 20; Supports = [6,20]; % length  = 20m, supports at 5m and 20m;
+prob = SFBMProb(Name, Length, Supports);
+
+% Concetrated Loads
+prob.AddPointLoad(-2,0);  % 2N downward at point 0
+
+% Torques
+prob.AddMoment(10,8);   % ACW 10Nm at point 8
+prob.AddMoment(-15,12); % CW 10Nm at point 12
+
+% Distributed Loads
+prob.AddDistLoad([5, 2], [1, 3]);    % Linear profile upwards from 1m to 3m and 
+prob.AddDistLoad([2, 5], [3, 5]);    % Linear profile upwards from 3m to 5m and 
+prob.AddDistLoad([-4, -2],[14, 16]); % Linear profile downwards from 14m to 16m
+prob.AddDistLoad([-2, -4],[16, 18]); % Linear profile downwards from 16m to 18m
+
+% Solve the problem
+prob.Solve()
+
+%%     Example(6)
+%Problem Name
+
+Name = 'Wikipedia';
+Length = 50; Supports = 50; % length  = 10, supports at 2 and 10;
+prob = SFBMProb(Name, Length, Supports);
+
+% Concetrated Loads
+prob.AddPointLoad(-2,0);  % 2N downward at point 0
+
+% Torques
+prob.AddMoment(10,8);   % ACW 10Nm at point 8
+prob.AddMoment(-15,12); % CW 10Nm at point 12
+
+% Distributed Loads
+prob.AddDistLoad([5, 2], [1, 3]);    % Linear profile upwards from 1m to 3m and 
+prob.AddDistLoad([2, 5], [3, 5]);    % Linear profile upwards from 3m to 5m and 
+prob.AddDistLoad([-4, -2],[14, 16]); % Linear profile downwards from 14m to 16m
+prob.AddDistLoad([-2, -4],[16, 18]); % Linear profile downwards from 16m to 18m
 
 % Solve the problem
 prob.Solve()

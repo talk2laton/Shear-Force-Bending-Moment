@@ -48,8 +48,8 @@ end
 %% Creating Freebody Diagram and Equation Figure
 h1 = figure(Color = 'w');
 set(h1,'units','normalized','outerposition',[0.01 0.05 0.647 0.95])
-ax2 = axes('Position',[0.02,0.470,0.96,0.500],'Visible','off');
-ax3 = axes('Position',[0.02,0.020,0.96,0.430],'Visible','off');
+ax2 = axes('Position',[0.02,0.520,0.96,0.450],'Visible','off');
+ax3 = axes('Position',[0.02,0.020,0.96,0.480],'Visible','off');
 axes(ax2)
 fill(5*[0,0,1,1],0.05*[-1,1,1,-1],'b','LineWidth',1.5, 'FaceAlpha', 0.5)
 axis([-0.5, 5.5, -1, 1]); axis equal; hold on
@@ -195,9 +195,9 @@ for n = 2:numel(EqRange)
     Range = [Range;{range}]; Equa1 = [Equa1;{equa1}]; Equa2 = [Equa2;{equa2}]; 
 end
 axes(ax3)
-text(0.02, 0.80, Range, 'VerticalAlignment', 'cap', 'FontSize', 12, 'interpreter', 'latex')
-text(0.15, 0.80, Equa1, 'VerticalAlignment', 'cap', 'FontSize', 12, 'interpreter', 'latex')
-text(0.50, 0.80, Equa2, 'VerticalAlignment', 'cap', 'FontSize', 12, 'interpreter', 'latex')
+text(0.02, 0.90, Range, 'VerticalAlignment', 'cap', 'FontSize', 12, 'interpreter', 'latex')
+text(0.15, 0.90, Equa1, 'VerticalAlignment', 'cap', 'FontSize', 12, 'interpreter', 'latex')
+text(0.50, 0.90, Equa2, 'VerticalAlignment', 'cap', 'FontSize', 12, 'interpreter', 'latex')
 f1 = getframe(gcf);
 %%
 h2 = figure(Color = 'w');
