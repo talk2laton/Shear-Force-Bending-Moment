@@ -161,7 +161,7 @@ prob.AddDistLoad([-4, -4], [14, 17]); % Constant 5N/m downwards from 12m to 18m
 % Solve the problem
 prob.Solve()
 
-%%     Example(4)
+%%     Example(5)
 %Problem Name
 Name = 'Example 4';
 % Length and Supports
@@ -183,9 +183,9 @@ prob.AddDistLoad([-4, -2, -4],[14, 16, 18]); % Quadratic profile distributed dow
 prob.Solve()
 
 
-%%     Example(5)
+%%     Example(6)
 %Problem Name
-Name = 'Example 5';
+Name = 'Example 6';
 % Length and Supports
 Length = 20; Supports = [6,20]; % length  = 20m, supports at 5m and 20m;
 prob = SFBMProb(Name, Length, Supports);
@@ -206,7 +206,7 @@ prob.AddDistLoad([-2, -4],[16, 18]); % Linear profile downwards from 16m to 18m
 % Solve the problem
 prob.Solve()
 
-%%     Example(6)
+%%     Example(7)
 %Problem Name
 Name = 'Wikipedia';
 Length = 50; Supports = 50;
