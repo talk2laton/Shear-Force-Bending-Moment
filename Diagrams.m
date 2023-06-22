@@ -1,14 +1,15 @@
-function Diagrams(Supports, x,sf,bm)
+function [f1, f2] = Diagrams(x,sf,bm)
 close all
 clc
 global Name nc nd nm Cload Dload Mload Xload Cloc Dloc Mloc Xtick YtickSF ....
-       YtickBM PSF PBM DeciPlace TypeF TypeM TypeD EqRange
+       YtickBM PSF PBM DeciPlace TypeF TypeM TypeD EqRange ForceUnit LengthUnit
 
 %% Display Information Processing
 Loads = [];
 for m = 1:numel(Cload)
-    Loads = [Loads,Cload{m}];
+    Loads = [Loads, Cload{m}];
 end
+
 for m = 1:numel(Dload)
     Loads = [Loads,Dload{m}];
 end
@@ -17,12 +18,6 @@ end
 Xfactor     = 10^floor(log10(max(abs(x))));
 SFfactor    = 10^floor(log10(max(abs(sf))));
 BMfactor    = 10^floor(log10(max(abs(bm))));
-maxforce    = max(Loads); minforce = min(Loads);
-
-% To adjust length of arrows and number of arrows
-lenperforce = 2/max([maxforce, -minforce]);
-numperlen   = 30/(max(x) - min(x));
-
 
 % Tick Points and Values
 Xtick   = unique(Round(Xtick,DeciPlace));
@@ -32,13 +27,13 @@ XTICK   = {};
 YTICKSF = {};
 YTICKBM = {};
 XLOAD   = {};
-format  = ['%.',num2str(DeciPlace),'f'];
+format  = ['%.', num2str(DeciPlace), 'f'];
 for n = 1:numel(Xtick)
-    XTICK{n} = num2str(Xtick(n)/Xfactor,format);
+    XTICK{n} = num2str(Xtick(n)/Xfactor, format);
 end
 
 for n = 1:numel(Xload)
-    XLOAD{n} = num2str(Xload(n)/Xfactor,format);
+    XLOAD{n} = num2str(Xload(n)/Xfactor, format);
 end
 
 for n = 1:numel(YtickSF)
@@ -53,62 +48,27 @@ end
 %% Creating Freebody Diagram and Equation Figure
 h1 = figure(Color = 'w');
 set(h1,'units','normalized','outerposition',[0.01 0.05 0.647 0.95])
-ax1 = axes('Position',[0.02,0.650,0.96,0.330],'Visible','off');
-ax2 = axes('Position',[0.02,0.320,0.96,0.330],'Visible','off');
-ax3 = axes('Position',[0.02,0.020,0.96,0.300],'Visible','off');
-axes(ax1)
-axis([-0.5, 5.5, -1, 1]); axis equal; axis off;  hold on
-if(numel(Supports) == 2)
-    [Xt,Yt, Xr, Yr] = makesupport1([Supports(1)*5/x(end),0], 0.1, 0);
-    fill(Xt,Yt,'k','LineWidth',1.5, 'FaceAlpha', 0.5);
-    fill(Xr,Yr,'k','LineWidth',1.5, 'FaceAlpha', 0.3);
-    [Xt,Yt, Xr, Yr, Xl, Yl, Xc, Yc] = makesupport2([Supports(2)*5/x(end),0], 0.1, 0);
-    fill(Xt,Yt,'k','LineWidth',1.5, 'FaceAlpha', 0.5);
-    fill(Xr,Yr,'k','LineWidth',1.5, 'FaceAlpha', 0.3);
-    fill(Xl,Yl,'k','LineWidth',1.5, 'FaceAlpha', 0.3);
-    arrayfun(@(n) fill(Xc(n,:),Yc(n,:),'k','LineWidth',1.5, 'FaceAlpha', 0.3), 1:size(Xc,1));
-else
-    tt = pi*linspace(0.5,1.5,100); R = 0.5+0.05*rand(1,100);
-    xx = R.*cos(tt); yy = R.*sin(tt);
-    xs = Supports;
-    if(xs == 0)
-        fill(xx,yy,'k','LineWidth',0.01, 'FaceAlpha', 0.2);
-    else
-        fill(xs-xx,yy,'k','LineWidth',0.01, 'FaceAlpha', 0.2);
-    end
-    plot([xs,xs], 0.5*[-1,1],'k', 'LineWidth',1.5);
-end
-fill(5*[0,0,1,1],0.05*[-1,1,1,-1],'b','LineWidth',1.5, 'FaceAlpha', 0.5);
-if(numel(Supports) == 2)
-    plot(Supports(1)*5/x(end),0, 'or', MarkerFaceColor = 'r'); 
-    plot(Supports(2)*5/x(end),0,'or', MarkerFaceColor = 'r');
-end
+ax2 = axes('Position',[0.02,0.520,0.96,0.450],'Visible','off');
+ax3 = axes('Position',[0.02,0.020,0.96,0.480],'Visible','off');
 axes(ax2)
 fill(5*[0,0,1,1],0.05*[-1,1,1,-1],'b','LineWidth',1.5, 'FaceAlpha', 0.5)
 axis([-0.5, 5.5, -1, 1]); axis equal; hold on
-PlotHandles = [];
-PlotNames   = {};
-
+PlotHandles = []; PlotNames   = {};
 Arrowhead = [0.05, 0.1];
 % Concentrated Forces
 nca = 0; ncr = 0;
 for n   = 1:nc
     xl  = Cloc{n}*5/x(end);
     yl = sign(-Cload{n})*[0.6, 0.05];
-    if(TypeF(n) == 'a')
-        text(ax1, xl,1.1*yl(1),[num2str(abs(Cload{n}),'%.2f'),'KN'] ,'FontWeight','bold', 'HorizontalAlignment','center', 'interpreter','latex')
-    end
-    text(ax2, xl,1.1*yl(1),[num2str(abs(Cload{n}),'%.2f'),'KN'], 'FontWeight','bold', 'HorizontalAlignment','center', 'interpreter','latex')
+    text(xl,1.1*yl(1), num2str(abs(Cload{n}),'%.2f') + ForceUnit, 'FontWeight','bold', 'HorizontalAlignment','center', 'interpreter','latex')
     
     if TypeF(n) == 'a'
         if (nca == 0)
             nca = 1;
-            axes(ax1); DrawArrow(xl,yl, Arrowhead,'linewidth', 2,'color','k');
-            axes(ax2); hca = DrawArrow(xl,yl, Arrowhead,'linewidth', 2,'color','k');
+            hca = DrawArrow(xl,yl, Arrowhead,'linewidth', 2,'color','k');
             PlotHandles = [PlotHandles; hca]; PlotNames = [PlotNames;{'Applied Concentrated Force'}];
         else
-            axes(ax1); DrawArrow(xl,yl,Arrowhead,'linewidth',2,'color','k');
-            axes(ax2); DrawArrow(xl,yl,Arrowhead,'linewidth',2,'color','k');
+            DrawArrow(xl,yl,Arrowhead,'linewidth',2,'color','k');
         end
     else
         if (ncr == 0)
@@ -123,40 +83,28 @@ end
 
 % Distributed Forces
 nda = 0; ndr = 0;
-maxD = 0;
-for n  = 1:nd
-    maxD = max(maxD, max(abs(Dload{n})));
-end
-
 for n  = 1:nd
     xl     = Dloc{n}*5/x(end);
     num    = ceil((xl(end) - xl(1))/0.13);
     xdist  = linspace(xl(1),xl(end),num);
-    ps     = polyfit(xl,Dload{n}*0.4/maxD,numel(xl)-1);
+    ps     = polyfit(xl,Dload{n}*0.3/max(abs(Dload{n})),numel(xl)-1);
     ydist1 = polyval(ps,xdist); 
     ydist2 = 0.05*sign(-ydist1);
     ydist1 = -ydist1 + ydist2;
     ydist = [ydist1; ydist2];
-    if TypeD(n) == 'a'
-        text(ax1, xdist(1),1.1*ydist1(1),[num2str(abs(Dload{n}(1)),'%.2f'),'KN/m'] ,'FontWeight','bold', 'HorizontalAlignment','center', 'interpreter','latex')
-        text(ax1, xdist(end),1.1*ydist1(end),[num2str(abs(Dload{n}(end)),'%.2f'),'KN/m'] ,'FontWeight','bold', 'HorizontalAlignment','center', 'interpreter','latex')
-    end
-    text(ax2, xdist(1),1.1*ydist1(1),[num2str(abs(Dload{n}(1)),'%.2f'),'KN/m'] ,'FontWeight','bold', 'HorizontalAlignment','center', 'interpreter','latex')
-    text(ax2, xdist(end),1.1*ydist1(end),[num2str(abs(Dload{n}(end)),'%.2f'),'KN/m'] ,'FontWeight','bold', 'HorizontalAlignment','center', 'interpreter','latex')
+    text(xdist(1),1.1*ydist1(1), num2str(abs(Dload{n}(1)),'%.2f') + ForceUnit + "/" + LengthUnit ,'FontWeight','bold', 'HorizontalAlignment','center', 'interpreter','latex')
+    text(xdist(end),1.1*ydist1(end), num2str(abs(Dload{n}(end)),'%.2f') + ForceUnit + "/" + LengthUnit ,'FontWeight','bold', 'HorizontalAlignment','center', 'interpreter','latex')
      
     if TypeD(n) == 'a'
         for m = 1:num
             if (nda == 0)
                 nda = 1;
-                axes(ax1);  DrawArrow(xdist(m), ydist(:,m),Arrowhead,'linewidth',1.5,'color','m');
-                axes(ax2);  hda = DrawArrow(xdist(m), ydist(:,m),Arrowhead,'linewidth',1.5,'color','m');
+                hda = DrawArrow(xdist(m), ydist(:,m),Arrowhead,'linewidth',1.5,'color','m');
                 PlotHandles = [PlotHandles; hda];  PlotNames = [PlotNames;{'Applied Distributed Force'}];
             else
-                axes(ax1);  DrawArrow(xdist(m),ydist(:,m),Arrowhead,'linewidth',1.5,'color','m');
-                axes(ax2);  DrawArrow(xdist(m),ydist(:,m),Arrowhead,'linewidth',1.5,'color','m');
+                DrawArrow(xdist(m),ydist(:,m),Arrowhead,'linewidth',1.5,'color','m');
             end
         end
-        plot(ax1, xdist,ydist1,'m','linewidth',1.5)
     else
         for m = 1:num
             if (ndr == 0)
@@ -164,11 +112,11 @@ for n  = 1:nd
                 hdr = DrawArrow(xdist(m),ydist(:,m),Arrowhead,'linewidth',1.5,'color','m','LineStyle','-.');
                 PlotHandles = [PlotHandles; hdr];  PlotNames = [PlotNames;{'Reacting Distributed Force'}];
             else
-                DrawArrow(xdist(nn),ydist(:,m),Arrowhead, 'linewidth',1.5,'color','m','LineStyle','-.');
+                DrawArrow(xdist(m),ydist(:,m),Arrowhead, 'linewidth',1.5,'color','m','LineStyle','-.');
             end
         end
     end
-    plot(ax2, xdist,ydist1,'m','linewidth',1.5)
+    plot(xdist,ydist1,'m','linewidth',1.5)
 end
 
 % Moments
@@ -178,24 +126,17 @@ for n = 1:nm
     t      = sign(Mload{n})*[-3*pi/4,3*pi/4];
     t1     = t(1);
     t2     = t(2);
-
-    if TypeM(n) == 'a'
-        text(ax1, Mloc{n}*5/x(end),0.3*sign(Mload{n}),[num2str(abs(Mload{n}),'%.2f'),'KN-m'], 'FontWeight','bold', 'HorizontalAlignment','center', 'interpreter','latex')
-    end
-    text(ax2, Mloc{n}*5/x(end),0.3*sign(Mload{n}),[num2str(abs(Mload{n}),'%.2f'),'KN-m'], 'FontWeight','bold', 'HorizontalAlignment','center', 'interpreter','latex')
+    text(Mloc{n}*5/x(end),0.3*sign(Mload{n}), num2str(abs(Mload{n}),'%.2f') + ForceUnit + "-" + LengthUnit, 'FontWeight','bold', 'HorizontalAlignment','center', 'interpreter','latex')
     
     if TypeM(n) == 'a'
         if(nma == 0)
             nma = 1;
-            axes(ax1); MomentArrow(radius,t1,t2,[Mloc{n}*5/x(end),0],'r', 2);
-            axes(ax2);hma = MomentArrow(radius,t1,t2,[Mloc{n}*5/x(end),0],'r', 2);
+            hma = MomentArrow(radius,t1,t2,[Mloc{n}*5/x(end),0],'r', 2);
             PlotHandles = [PlotHandles; hma];  PlotNames = [PlotNames;{'Applied Torque'}];
         else
-            axes(ax1); MomentArrow(radius,t1,t2,[Mloc{n}*5/x(end),0],'r', 2);
-            axes(ax2); MomentArrow(radius,t1,t2,[Mloc{n}*5/x(end),0],'r', 2);
+            MomentArrow(radius,t1,t2,[Mloc{n}*5/x(end),0],'r', 2);
         end
-        plot(ax1, Mloc{n}*5/x(end),0,'or','markersize',5,'markerfacecolor','r')
-        plot(ax2, Mloc{n}*5/x(end),0,'or','markersize',5,'markerfacecolor','r')
+        plot(Mloc{n}*5/x(end),0,'or','markersize',5,'markerfacecolor','r')
     else
         if(nmr == 0)
             nmr = 1;
@@ -208,13 +149,11 @@ for n = 1:nm
         plot(Mloc{n}*5/x(end),0,'ok','markersize',15,'markerfacecolor','r')
     end
 end
-
-title(ax1, '$Problem~Diagram$', 'interpreter','latex')
-title(ax2, '$Free~Body~Diagram~with~Reactions$', 'interpreter','latex')
-
+title('$Free~Body~Diagram~with~Reactions$', 'interpreter','latex')
+Xload = unique(Xload);
 ax2.YTick = []; ax2.XTick = Xload*5/x(end);
 ax2.XTickLabel = Xload; ax2.TickLabelInterpreter = 'Latex';
-xlabel('$m$', 'Interpreter','latex');
+xlabel("$" + LengthUnit + "$", 'Interpreter','latex');
 plot(ax2, [Xload; Xload]*5/x(end),[0;-1]*ones(size(Xload)),...
                     'LineStyle','--', 'Color','k');
 axis([-0.5, 5.5, -1, 1]); hold off; 
@@ -256,9 +195,9 @@ for n = 2:numel(EqRange)
     Range = [Range;{range}]; Equa1 = [Equa1;{equa1}]; Equa2 = [Equa2;{equa2}]; 
 end
 axes(ax3)
-text(0.15, 0.80, Range, 'VerticalAlignment', 'cap', 'FontSize', 12, 'interpreter', 'latex')
-text(0.40, 0.80, Equa1, 'VerticalAlignment', 'cap', 'FontSize', 12, 'interpreter', 'latex')
-text(0.65, 0.80, Equa2, 'VerticalAlignment', 'cap', 'FontSize', 12, 'interpreter', 'latex')
+text(0.02, 0.90, Range, 'VerticalAlignment', 'cap', 'FontSize', 12, 'interpreter', 'latex')
+text(0.15, 0.90, Equa1, 'VerticalAlignment', 'cap', 'FontSize', 12, 'interpreter', 'latex')
+text(0.50, 0.90, Equa2, 'VerticalAlignment', 'cap', 'FontSize', 12, 'interpreter', 'latex')
 f1 = getframe(gcf);
 %%
 h2 = figure(Color = 'w');
@@ -279,8 +218,8 @@ ax4.YTick = unique(round(YtickSF, 3, 'significant'));
 ax4.XTick= unique(round(Xtick, 3, 'significant'));
 ax4.TickLabelInterpreter = 'latex';
 
-ylabel('$V(KN)$', 'Interpreter','latex');
-xlabel('$m$', 'Interpreter','latex');
+ylabel("$V(" + ForceUnit + ")$", 'Interpreter','latex');
+xlabel("$" + LengthUnit + "$", 'Interpreter','latex');
 title('$Shear~Force~Diagram$','FontSize',12, 'interpreter','latex')
 
 %%
@@ -296,9 +235,10 @@ ax5 = gca;
 ax5.YTick = unique(round(YtickBM, 3, 'significant'));
 ax5.XTick = unique(round(Xtick, 3, 'significant'));
 ax5.TickLabelInterpreter = 'latex';
-ylabel('$M(KN-m)$', 'Interpreter','latex');
-xlabel('$m$', 'Interpreter','latex');
-title('$Bending~Monent~Diagram$','FontSize',12, 'interpreter','latex')
+
+ylabel("$M(" + ForceUnit + "-" + LengthUnit + ")$", 'Interpreter','latex');
+xlabel("$" + LengthUnit + "$", 'Interpreter','latex');
+title('$Bending~Moment~Diagram$','FontSize',12, 'interpreter','latex')
 
 %% annotation
 [xa1, ya1] = ConvertCoordinates(ax4, Xtick,repmat(Vmax,size(Xtick)));
@@ -323,9 +263,7 @@ for n = 1:numel(YtickBM)
     h4 = annotation('line',[xb2(n) xc2(n)],[yb2(n) yc2(n)],'Tag' , 'connect1');
     set(h4,'LineStyle','--'); set(h4,'Color','b'); 
 end
-
-f2 = getframe(gcf); F = [f1.cdata,f2.cdata]; imwrite(F,[Name,'.png'])
-
+f2 = getframe(gcf);
 
 function [Xt,Yt, Xr, Yr] = makesupport1(Node, t, n)
 t    = 0.7*t; y = 4*t; x = t*cos(pi/6)*5.5/1.5;
