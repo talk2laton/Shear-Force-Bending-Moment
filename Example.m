@@ -8,10 +8,10 @@
 %     written with Latex
 % 
 %% How to call the function
-%     To use this program, you need to call the solve function on the instance 
-%     of the SFBMProb object that has the complete problem description.
-%     You first create the SFBMProb Object and then add the loads in no
-%     partcular order. 
+%     To use this program, you need to call the solve function on the 
+%     instance of the SFBMProb object that has the complete problem 
+%     description. You first create the SFBMProb Object and then add the 
+%     loads in no partcular order. 
 % 
 %% How to create the SFBMProb object
 %     create an instance of SFBMProb by calling "SFBMProb" with three
@@ -55,27 +55,25 @@
 
 %% How to add loads to the object.
 %
-%%-   Moment(Torque)
+%%-   Moment (Torque)
 %         To add a clockwise moment of magnitude 3KN-m applied at point 5m
 %         prob.AddMomentLoad(-3, 5);
-%         For an anticlockwise moment of magnitude 7KN-m applied at point 8m
-%         prob.AddMomentLoad(7, 8);
+%         For an anticlockwise moment of magnitude 7KN-m applied at point 
+%         8m prob.AddMomentLoad(7, 8);
 %
-%%-   Concentrated Load(Force)
-%         To add a downward point load of magnitude 0.8KN applied at point 3m
-%         prob.AddPointLoad(-0.8, 3);
+%%-   Concentrated Load (Force)
+%         To add a downward point load of magnitude 0.8KN applied at point 
+%         3m prob.AddPointLoad(-0.8, 3);
 %         For an upward point load of magnitude 5KN-m applied at point 7m
 %         prob.AddMomentLoad(5, 7);
 %
-%%-   Distributed Force
-%         To add uniform upward distributed load of magnitude 2KN/m applied from point 3 to 5m 
-%         prob.AddDistLoad([2, 2], [3, 5]);
-%         For linearly increasing distributed load 2KN/m  to 5KN/m applied from point 3 to 5m 
-%         prob.AddDistLoad([2, 5], [3, 5]);
-
+%%-   Distributed Force 
+%         To add uniform upward distributed load of magnitude 2KN/m applied
+%         from point 3 to 5m prob.AddDistLoad([2, 2], [3, 5]);
+%         For linearly increasing distributed load 2KN/m  to 5KN/m applied 
+%         from point 3 to 5m prob.AddDistLoad([2, 5], [3, 5]);
 
 %%     Example(1)
-
 %Problem Name
 Name = 'Example 1';
 
@@ -120,6 +118,7 @@ prob.Solve()
 %%     Example(3)
 %Problem Name
 Name = 'Example 3';
+
 % Length and Supports
 Length = 30; Supports = [0,20]; % length  = 30m, supports at 0m and 20m;
 prob = SFBMProb(Name, Length, Supports);
@@ -143,6 +142,7 @@ prob.Solve()
 %%     Example(4)
 %Problem Name
 Name = 'Example 4';
+
 % Length and Supports
 Length = 20; Supports = [5,20]; % length  = 20m, supports at 5m and 20m;
 prob = SFBMProb(Name, Length, Supports);
@@ -164,6 +164,7 @@ prob.Solve()
 %%     Example(4)
 %Problem Name
 Name = 'Example 4';
+
 % Length and Supports
 Length = 20; Supports = [6,20]; % length  = 20m, supports at 5m and 20m;
 prob = SFBMProb(Name, Length, Supports);
@@ -182,10 +183,10 @@ prob.AddDistLoad([-4, -2, -4],[14, 16, 18]); % Quadratic profile distributed dow
 % Solve the problem
 prob.Solve()
 
-
 %%     Example(5)
 %Problem Name
 Name = 'Example 5';
+
 % Length and Supports
 Length = 20; Supports = [6,20]; % length  = 20m, supports at 5m and 20m;
 prob = SFBMProb(Name, Length, Supports);
@@ -229,4 +230,4 @@ prob.AddMoment(-50,37.5);
 prob.AddDistLoad([-1,-1], [10,25]);  
 
 % Solve the problem
-prob.Solve()
+prob.Solve();
