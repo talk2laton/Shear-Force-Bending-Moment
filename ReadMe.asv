@@ -97,7 +97,7 @@ prob.AddMoment(-10, 7); % CW 10Nm at point 7
 
 %Solve the problem
 prob.Solve()
-![alt text](https://github.com/talk2laton/Shear_Force_Bending_Moment/blob/main/Example 1.png)
+![alt text](https://github.com/talk2laton/Shear/blob/main/xtick.png)
 
 %%     Example(2)
 %Problem Name
