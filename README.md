@@ -76,113 +76,119 @@
 
 
 ###     Example(1)
-        Problem Name
+        -Problem Name
         Name = 'Example 1';
         
-        Length and Supports
+        -Length and Supports
         Length = 10; Supports = [2, 10]; % length  = 10, supports at 2 and 10;
         prob = SFBMProb(Name, Length, Supports);
+        ![alt text](https://github.com/talk2laton/Shear-Force-Bending-Moment/blob/main/Example1prob.png)
         
-        Set Unit
+        -Set Unit
         prob.ForceUnit = "lb";
         prob.LengthUnit = "inch";
         
-        Concetrated Loads
+        -Concetrated Loads
         prob.AddPointLoad(-5, 0); % 5N downward at point 0
         prob.AddPointLoad(-10, 8); % 10N downward at point 8
+        ![alt text](https://github.com/talk2laton/Shear-Force-Bending-Moment/blob/main/Example1pointload.png)
         
-        Torques
+        -Torques
         prob.AddMoment(10, 3);  % ACW 10Nm at point 3
         prob.AddMoment(-10, 7); % CW 10Nm at point 7
         ![alt text](https://github.com/talk2laton/Shear-Force-Bending-Moment/blob/main/Example1torque.png)
         
-        Solve the problem
+        -Solve the problem
         prob.Solve()
         ![alt text](https://github.com/talk2laton/Shear-Force-Bending-Moment/blob/main/Example1.png)
 
 ###     Example(2)
-        Problem Name
+        -Problem Name
         Name = 'Example 2';
         
-        Length and Supports
+        -Length and Supports
         Length = 20; Supports = 0; % length  = 20m, Cantilever supported at 0 m;
         prob = SFBMProb(Name, Length, Supports);
         
-        Concentrated Loads
+        -Concentrated Loads
         prob.AddPointLoad(-5, 6);   % 5N downward at point 6
         prob.AddPointLoad(-10, 13); % 10N downward at point 13
         
-        Distributed Loads
+        -Distributed Loads
         prob.AddDistLoad([5,5],[1,3]);    % Constant 5N/m upwards from 1m to 3 m 
         prob.AddDistLoad([-4,-4],[14,17]); % Constant 4N/m downwards from 14m to 17 m
         
-        Solve the problem
+        -Solve the problem
         prob.Solve()
         ![alt text](https://github.com/talk2laton/Shear-Force-Bending-Moment/blob/main/Example2.png)
 
-###    Example(3)
-        Problem Name
+
+###     Example(3)
+        -Problem Name
         Name = 'Example 3';
         Length and Supports
         Length = 30; Supports = [0,20]; % length  = 30m, supports at 0m and 20m;
         prob = SFBMProb(Name, Length, Supports);
         
-        Concentrated Loads
+        -Concentrated Loads
         prob.AddPointLoad(-20, 6);   % 20N downward at point 6
         prob.AddPointLoad(-10, 13);  % 10N downward at point 13
         prob.AddPointLoad(5, 27);    % 5N upward at point 27
         
-        Torques
+        -Torques
         prob.AddMoment(50, 8);  % ACW 50Nm at point 8
         prob.AddMoment(-45, 25); % CW 45Nm at point 25
         
-        Distributed Loads
+        -Distributed Loads
         prob.AddDistLoad([7, 7], [1,3]);    % Constant 7N/m upwards from 1m to 3m 
         prob.AddDistLoad([-5,-5], [12,18]); % Constant 5N/m downwards from 12m to 18m
         
-        Solve the problem
+        -Solve the problem
         prob.Solve()
         ![alt text](https://github.com/talk2laton/Shear-Force-Bending-Moment/blob/main/Example3.png)
 
 
-%%     Example(4)
-%Problem Name
-Name = 'Example 4';
-% Length and Supports
-Length = 20; Supports = [5,20]; % length  = 20m, supports at 5m and 20m;
-prob = SFBMProb(Name, Length, Supports);
+###    Example(4)
+        -Problem Name
+        Name = 'Example 4';
+        -Length and Supports
+        Length = 20; Supports = [5,20]; % length  = 20m, supports at 5m and 20m;
+        prob = SFBMProb(Name, Length, Supports);
+        
+        -Concentrated Loads
+        prob.AddPointLoad(-2, 0);   % 2N downward at point 0
+        
+        -Torques
+        prob.AddMoment(50, 8);  % ACW 50Nm at point 8
+        prob.AddMoment(-45, 15); % CW 45Nm at point 15
+        
+        -Distributed Loads
+        prob.AddDistLoad([5, 5], [1,3]);    % Constant 7N/m upwards from 1m to 3m 
+        prob.AddDistLoad([-4, -4], [14, 17]); % Constant 5N/m downwards from 12m to 18m
+        
+        -Solve the problem
+        prob.Solve()
+        ![alt text](https://github.com/talk2laton/Shear-Force-Bending-Moment/blob/main/Example4.png)
 
-% Concentrated Loads
-prob.AddPointLoad(-2, 0);   % 2N downward at point 0
-
-% Torques
-prob.AddMoment(50, 8);  % ACW 50Nm at point 8
-prob.AddMoment(-45, 15); % CW 45Nm at point 15
-
-% Distributed Loads
-prob.AddDistLoad([5, 5], [1,3]);    % Constant 7N/m upwards from 1m to 3m 
-prob.AddDistLoad([-4, -4], [14, 17]); % Constant 5N/m downwards from 12m to 18m
-
-% Solve the problem
-prob.Solve()
-
-%%     Example(4)
-%Problem Name
-Name = 'Example 4';
-% Length and Supports
-Length = 20; Supports = [6,20]; % length  = 20m, supports at 5m and 20m;
-prob = SFBMProb(Name, Length, Supports);
-
-% Concetrated Loads
-prob.AddPointLoad(-2,0);  % 2N downward at point 0
-
-% Torques
-prob.AddMoment(10,8);   % ACW 10Nm at point 8
-prob.AddMoment(-15,12); % CW 10Nm at point 12
-
-% Distributed Loads
-prob.AddDistLoad([5, 2, 5], [1, 3, 5]);    % Constant 5N/m upwards from 1m to 3m and 
-prob.AddDistLoad([-4, -2, -4],[14, 16, 18]); % Constant 4N/m downwards from 14m to 17m
-
-% Solve the problem
-prob.Solve()
+###     Example(5)
+        -Problem Name
+        Name = 'Example 5';
+        
+        -Length and Supports
+        Length = 20; Supports = [6,20]; % length  = 20m, supports at 5m and 20m;
+        prob = SFBMProb(Name, Length, Supports);
+        
+        -Concetrated Loads
+        prob.AddPointLoad(-2,0);  % 2N downward at point 0
+        
+        -Torques
+        prob.AddMoment(10,8);   % ACW 10Nm at point 8
+        prob.AddMoment(-15,12); % CW 10Nm at point 12
+        
+        -Distributed Loads
+        prob.AddDistLoad([5, 2, 5], [1, 3, 5]);    % Constant 5N/m upwards from 1m to 3m and 
+        prob.AddDistLoad([-4, -2, -4],[14, 16, 18]); % Constant 4N/m downwards from 14m to 17m
+        
+        -Solve the problem
+        prob.Solve()
+        ![alt text](https://github.com/talk2laton/Shear-Force-Bending-Moment/blob/main/Example5.png)
