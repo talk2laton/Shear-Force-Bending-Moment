@@ -24,6 +24,7 @@
        If the problem is a cantilever problem, then you have only one clamped 
        support, at the beginning or end of the beam. In such a case, the number is
        second argument contains 2 elements instead of three. 
+        ![alt text](https://github.com/talk2laton/Shear-Force-Bending-Moment/blob/main/Cantilever.png?raw=true)
 
        For instance, for a cantilever of length 20m, supported at the beginning, 
        prob = SFBMProb("Cantilever", 20, 0)
