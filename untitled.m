@@ -1,5 +1,5 @@
         %Problem Name
-        Name = 'Example 1';
+        Name = 'Example221';
         
         %Length and Supports
         Length = 10; Supports = [2, 10]; % length  = 10, supports at 2 and 10;

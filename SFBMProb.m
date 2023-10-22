@@ -141,14 +141,20 @@ classdef SFBMProb < handle
             end
             f1 = getframe(gcf);
             [X, ShearF, BendM, f2, f3] = SFBM(input{:});
-            F = [f1.cdata, f2.cdata, f3.cdata]; 
+            sz1 = size(f1.cdata,1);
+            pad1 = floor((size(f2.cdata,2) - size(f3.cdata,2))/2);
+            pad2 = size(f2.cdata,2) - size(f3.cdata,2)-pad1;
+            v1 = repmat(255, sz1, pad1, 3);
+            v2 = repmat(255, sz1, pad2, 3);
+            F = [f1.cdata; f2.cdata; 
+                [uint8(v1), f3.cdata, uint8(v2)]]; 
             if(~isempty(prob.Source))
                 imtext=text2im(char("   source = "+prob.Source));
                 [m, n] = size(imtext);
                 [~, p, ~] = size(F);
                 pad = 255*uint8(ones(3*m, p, 3));
                 pad(m+1:2*m,1:n,:) = 255*uint8(cat(3, imtext,imtext,imtext));
-                F = [F;pad];
+                F = [F;pad(:,1:p,:)];
             end
             imwrite(F, prob.Name+".png");
         end
