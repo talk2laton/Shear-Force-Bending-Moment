@@ -24,14 +24,13 @@
        If the problem is a cantilever problem, then you have only one clamped 
        support, at the beginning or end of the beam. In such a case, the number is
        second argument contains 2 elements instead of three. 
-        ![alt text](https://github.com/talk2laton/Shear-Force-Bending-Moment/blob/main/Cantilever.png?raw=true)
 
        For instance, for a cantilever of length 20m, supported at the beginning, 
        prob = SFBMProb("Cantilever", 20, 0)
         ![alt text](https://github.com/talk2laton/Shear-Force-Bending-Moment/blob/main/Cantilever.png?raw=true)
        and if supported at the end, 
        prob = SFBMProb("Cantilever", 20, 20)
-        ![alt text](https://github.com/talk2laton/Shear-Force-Bending-Moment/blob/main/Cantilever.png?raw=true)
+        ![alt text](https://github.com/talk2laton/Shear-Force-Bending-Moment/blob/main/Cantilever2.png?raw=true)
 
 ###   Beam on the floor
        Its possible to have a problem in which the body is lying on the floor 
@@ -95,10 +94,11 @@
         Torques
         prob.AddMoment(10, 3);  % ACW 10Nm at point 3
         prob.AddMoment(-10, 7); % CW 10Nm at point 7
+        ![alt text](https://github.com/talk2laton/Shear-Force-Bending-Moment/blob/main/Example1torque.png)
         
         Solve the problem
         prob.Solve()
-        ![alt text](https://github.com/talk2laton/Shear-Force-Bending-Moment/blob/main/Example1.png?raw=true)
+        ![alt text](https://github.com/talk2laton/Shear-Force-Bending-Moment/blob/main/Example1.png)
 
 ###     Example(2)
         Problem Name
