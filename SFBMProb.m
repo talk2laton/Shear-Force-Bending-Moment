@@ -156,7 +156,7 @@ classdef SFBMProb < handle
                 pad(m+1:2*m,1:n,:) = 255*uint8(cat(3, imtext,imtext,imtext));
                 F = [F;pad(:,1:p,:)];
             end
-            imwrite(F, prob.Name+".png");
+            imwrite(F, prob.Name+".tiff");
         end
     end
 end

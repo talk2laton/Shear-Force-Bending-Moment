@@ -163,7 +163,7 @@ prob.Solve()
 
 %%     Example(5)
 %Problem Name
-Name = 'Example 4';
+Name = 'Example 5';
 % Length and Supports
 Length = 20; Supports = [6,20]; % length  = 20m, supports at 5m and 20m;
 prob = SFBMProb(Name, Length, Supports);

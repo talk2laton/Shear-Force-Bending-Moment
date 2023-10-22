@@ -100,7 +100,7 @@
 
         -Solve the problem
         prob.Solve()
-![alt text](https://github.com/talk2laton/Shear-Force-Bending-Moment/blob/main/Example1.png)
+![alt text](https://github.com/talk2laton/Shear-Force-Bending-Moment/blob/main/Example1.tiff)
 
 ###     Example(2)
         -Problem Name
@@ -120,7 +120,7 @@
         
         -Solve the problem
         prob.Solve()
-![alt text](https://github.com/talk2laton/Shear-Force-Bending-Moment/blob/main/Example2.png)
+![alt text](https://github.com/talk2laton/Shear-Force-Bending-Moment/blob/main/Example2.tiff)
 
 
 ###     Example(3)
@@ -145,7 +145,7 @@
         
         -Solve the problem
         prob.Solve()
-![alt text](https://github.com/talk2laton/Shear-Force-Bending-Moment/blob/main/Example3.png)
+![alt text](https://github.com/talk2laton/Shear-Force-Bending-Moment/blob/main/Example3.tiff)
 
 
 ###    Example(4)
@@ -169,4 +169,4 @@
         
         -Solve the problem
         prob.Solve()
-![alt text](https://github.com/talk2laton/Shear-Force-Bending-Moment/blob/main/Example4.png)
+![alt text](https://github.com/talk2laton/Shear-Force-Bending-Moment/blob/main/Example5.tiff)
