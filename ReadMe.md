@@ -95,7 +95,7 @@
         
         Solve the problem
         prob.Solve()
-        ![alt text](https://github.com/talk2laton/Shear-Force-Bending-Moment/blob/main/Example1.png)
+        ![alt text](https://github.com/talk2laton/Shear-Force-Bending-Moment/blob/main/Example1.png?raw=true)
 
 ###     Example(2)
         Problem Name
