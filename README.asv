@@ -150,7 +150,7 @@
 
 ###    Example(4)
         -Problem Name
-        Name = 'Example 4';
+        Name = 'Example 5';
         
         -Length and Supports
         Length = 20; Supports = [6,20]; % length  = 20m, supports at 5m and 20m;
@@ -170,3 +170,26 @@
         -Solve the problem
         prob.Solve()
 ![alt text](https://github.com/talk2laton/Shear-Force-Bending-Moment/blob/main/Example4.png)
+
+###     Example(5)
+        -Problem Name
+        Name = 'Example 5';
+        
+        -Length and Supports
+        Length = 20; Supports = [6,20]; % length  = 20m, supports at 5m and 20m;
+        prob = SFBMProb(Name, Length, Supports);
+        
+        -Concetrated Loads
+        prob.AddPointLoad(-2,0);  % 2N downward at point 0
+        
+        -Torques
+        prob.AddMoment(10,8);   % ACW 10Nm at point 8
+        prob.AddMoment(-15,12); % CW 10Nm at point 12
+        
+        -Distributed Loads
+        prob.AddDistLoad([5, 2, 5], [1, 3, 5]);    % Constant 5N/m upwards from 1m to 3m and 
+        prob.AddDistLoad([-4, -2, -4],[14, 16, 18]); % Constant 4N/m downwards from 14m to 17m
+        
+        -Solve the problem
+        prob.Solve()
+![alt text](https://github.com/talk2laton/Shear-Force-Bending-Moment/blob/main/Example5.png)
