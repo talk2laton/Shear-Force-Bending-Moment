@@ -17,10 +17,15 @@ classdef SFBMProb < handle
         ForceUnit        string
         LengthUnit       string
         Solve
+        GetMaxShearForce
+        GetMaxBendMoment
     end
 
     properties (SetAccess = private)
         axhandle
+        X
+        ShearF
+        BendM
     end
 
     methods
@@ -38,9 +43,31 @@ classdef SFBMProb < handle
             prob.RemoveDistLoad = @(indx) RemoveDistributedLoad(prob, indx);
             prob.axhandle = FreeBody(prob.Length, prob.Supports);
             prob.Solve = @() Solver(prob);
+            prob.GetMaxShearForce = @() getMaxShearForce(prob);
+            prob.GetMaxBendMoment = @() getMaxBendMoment(prob);
         end
     
-        function prob =  AddMomentLoad(prob, val, loc)
+        function set.ForceUnit(prob,val)
+            UpdateTexts(prob, val);
+            prob.ForceUnit = val;
+        end
+    end
+
+    methods (Hidden = true)
+        function prob = UpdateTexts(prob, str)
+            try
+                children = prob.axhandle.Children;
+                for i = 1:numel(children)
+                    if(isgraphics(children(i),'text'))
+                        children(i).String = replace(...
+                            children(i).String, prob.ForceUnit, str);
+                    end
+                end
+                drawnow
+            catch
+            end
+        end
+        function prob = AddMomentLoad(prob, val, loc)
             axes(prob.axhandle);
             M = Moment(val, loc);
             t = sign(val)*[-3*pi/4,3*pi/4];
@@ -55,7 +82,7 @@ classdef SFBMProb < handle
             prob.MomentLoad = [prob.MomentLoad, M];
         end
 
-        function prob =  AddConcentratedLoad(prob, val, loc)
+        function prob = AddConcentratedLoad(prob, val, loc)
             Arrowhead = [0.05, 0.1];
             axes(prob.axhandle);
             P = PointLoad(val, loc);
@@ -72,7 +99,7 @@ classdef SFBMProb < handle
             prob.ConcentratedLoad = [prob.ConcentratedLoad, P];
         end
 
-        function prob =  AddDistributedLoad(prob, val, loc)
+        function prob = AddDistributedLoad(prob, val, loc)
             Arrowhead = [0.05, 0.1];
             axes(prob.axhandle);
             D = DistLoad(val, loc);
@@ -101,7 +128,7 @@ classdef SFBMProb < handle
             prob.DistributedLoad = [prob.DistributedLoad, D];
         end
 
-        function prob =  RemoveMomentLoad(prob, index)
+        function prob = RemoveMomentLoad(prob, index)
             i = find(prob.axhandle.Children == prob.MomentLoad(index).sh);
             for j = 1:prob.MomentLoad(index).num
                 delete(prob.axhandle.Children(i));
@@ -109,7 +136,7 @@ classdef SFBMProb < handle
             prob.MomentLoad(:,index) = [];
         end
 
-        function prob =  RemoveConcentratedLoad(prob, index)
+        function prob = RemoveConcentratedLoad(prob, index)
             i = find(prob.axhandle.Children == prob.ConcentratedLoad(index).sh);
             for j = 1:prob.ConcentratedLoad(index).num
                 delete(prob.axhandle.Children(i));
@@ -140,24 +167,34 @@ classdef SFBMProb < handle
                 input = [input, {{'DF', D.Val, D.Loc}}];
             end
             f1 = getframe(gcf);
-            [X, ShearF, BendM, f2, f3] = SFBM(input{:});
-            sz1 = size(f1.cdata,1);
-            pad1 = floor((size(f2.cdata,2) - size(f3.cdata,2))/2);
-            pad2 = size(f2.cdata,2) - size(f3.cdata,2)-pad1;
-            v1 = repmat(255, sz1, pad1, 3);
-            v2 = repmat(255, sz1, pad2, 3);
-            F = [f1.cdata; f2.cdata; 
-                [uint8(v1), f3.cdata, uint8(v2)]]; 
+            [prob.X, prob.ShearF, prob.BendM, f2, f3] = SFBM(input{:});
+            [hf1,~,~] = size(f1.cdata);
+            [~,bf2,~] = size(f2.cdata); 
+            f2.cdata = imresize(f2.cdata, [hf1, bf2]);
+            [~,bf3,~] = size(f3.cdata); 
+            f3.cdata = imresize(f3.cdata, [hf1, bf3]);
+            F = [f1.cdata, f2.cdata, f3.cdata]; 
             if(~isempty(prob.Source))
                 imtext=text2im(char("   source = "+prob.Source));
                 [m, n] = size(imtext);
                 [~, p, ~] = size(F);
                 pad = 255*uint8(ones(3*m, p, 3));
                 pad(m+1:2*m,1:n,:) = 255*uint8(cat(3, imtext,imtext,imtext));
-                F = [F;pad(:,1:p,:)];
+                F = [F;pad];
             end
-            imwrite(F, prob.Name+".tiff");
+            imwrite(F, prob.Name+".png");
         end
+    
+        function [maxShearForce, location] = getMaxShearForce(prob)
+            [maxShearForce, i] = max(abs(prob.ShearF));
+            location = prob.X(i);
+        end
+
+        function [maxBendMoment, location] = getMaxBendMoment(prob)
+            [maxBendMoment, i] = max(abs(prob.BendM));
+            location = prob.X(i);
+        end
+
     end
 end
 

@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>Example</title><meta name="generator" content="MATLAB 9.12"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2023-10-22"><meta name="DC.source" content="Example.m"><style type="text/css">
+      --><title>Example</title><meta name="generator" content="MATLAB 9.14"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2023-06-21"><meta name="DC.source" content="Example.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -67,7 +67,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#1">Shear Force &amp; Bending Moment Examples</a></li><li><a href="#2">How to call the function</a></li><li><a href="#3">How to create the SFBMProb object</a></li><li><a href="#4">Set Units</a></li><li><a href="#5">Load Description</a></li><li><a href="#6">How to add loads to the object.</a></li><li><a href="#7">Example(1)</a></li><li><a href="#8">Example(2)</a></li><li><a href="#9">Example(3)</a></li><li><a href="#10">Example(4)</a></li><li><a href="#11">Example(5)</a></li><li><a href="#12">Example(6)</a></li><li><a href="#13">Example(7)</a></li></ul></div><h2 id="1">Shear Force &amp; Bending Moment Examples</h2><pre class="codeinput"><span class="comment">%     This program calculates the shear force and bending moment profiles,</span>
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#1">Shear Force &amp; Bending Moment Examples</a></li><li><a href="#2">How to call the function</a></li><li><a href="#3">How to create the SFBMProb object</a></li><li><a href="#4">Set Units</a></li><li><a href="#5">Load Description</a></li><li><a href="#6">How to add loads to the object.</a></li><li><a href="#7">Example(1)</a></li><li><a href="#8">Example(2)</a></li><li><a href="#9">Example(3)</a></li><li><a href="#10">Example(4)</a></li><li><a href="#11">Example(4)</a></li><li><a href="#12">Example(5)</a></li><li><a href="#13">Example(6)</a></li></ul></div><h2 id="1">Shear Force &amp; Bending Moment Examples</h2><pre class="codeinput"><span class="comment">%     This program calculates the shear force and bending moment profiles,</span>
 <span class="comment">%     draws the free body, shear force and bending moment diagrams of the</span>
 <span class="comment">%     problem.</span>
 <span class="comment">%</span>
@@ -201,8 +201,8 @@ prob.AddDistLoad([-4, -4], [14, 17]); <span class="comment">% Constant 5N/m down
 
 <span class="comment">% Solve the problem</span>
 prob.Solve()
-</pre><img vspace="5" hspace="5" src="Example_07.png" alt=""> <img vspace="5" hspace="5" src="Example_08.png" alt=""> <h2 id="11">Example(5)</h2><pre class="codeinput"><span class="comment">%Problem Name</span>
-Name = <span class="string">'Example 5'</span>;
+</pre><img vspace="5" hspace="5" src="Example_07.png" alt=""> <img vspace="5" hspace="5" src="Example_08.png" alt=""> <h2 id="11">Example(4)</h2><pre class="codeinput"><span class="comment">%Problem Name</span>
+Name = <span class="string">'Example 4'</span>;
 <span class="comment">% Length and Supports</span>
 Length = 20; Supports = [6,20]; <span class="comment">% length  = 20m, supports at 5m and 20m;</span>
 prob = SFBMProb(Name, Length, Supports);
@@ -220,8 +220,8 @@ prob.AddDistLoad([-4, -2, -4],[14, 16, 18]); <span class="comment">% Quadratic p
 
 <span class="comment">% Solve the problem</span>
 prob.Solve()
-</pre><img vspace="5" hspace="5" src="Example_09.png" alt=""> <img vspace="5" hspace="5" src="Example_10.png" alt=""> <h2 id="12">Example(6)</h2><pre class="codeinput"><span class="comment">%Problem Name</span>
-Name = <span class="string">'Example 6'</span>;
+</pre><img vspace="5" hspace="5" src="Example_09.png" alt=""> <img vspace="5" hspace="5" src="Example_10.png" alt=""> <h2 id="12">Example(5)</h2><pre class="codeinput"><span class="comment">%Problem Name</span>
+Name = <span class="string">'Example 5'</span>;
 <span class="comment">% Length and Supports</span>
 Length = 20; Supports = [6,20]; <span class="comment">% length  = 20m, supports at 5m and 20m;</span>
 prob = SFBMProb(Name, Length, Supports);
@@ -241,7 +241,7 @@ prob.AddDistLoad([-2, -4],[16, 18]); <span class="comment">% Linear profile down
 
 <span class="comment">% Solve the problem</span>
 prob.Solve()
-</pre><img vspace="5" hspace="5" src="Example_11.png" alt=""> <img vspace="5" hspace="5" src="Example_12.png" alt=""> <h2 id="13">Example(7)</h2><pre class="codeinput"><span class="comment">%Problem Name</span>
+</pre><img vspace="5" hspace="5" src="Example_11.png" alt=""> <img vspace="5" hspace="5" src="Example_12.png" alt=""> <h2 id="13">Example(6)</h2><pre class="codeinput"><span class="comment">%Problem Name</span>
 Name = <span class="string">'Wikipedia'</span>;
 Length = 50; Supports = 50;
 prob = SFBMProb(Name, Length, Supports);
@@ -264,7 +264,7 @@ prob.AddDistLoad([-1,-1], [10,25]);
 
 <span class="comment">% Solve the problem</span>
 prob.Solve()
-</pre><img vspace="5" hspace="5" src="Example_13.png" alt=""> <img vspace="5" hspace="5" src="Example_14.png" alt=""> <p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2022a</a><br></p></div><!--
+</pre><img vspace="5" hspace="5" src="Example_13.png" alt=""> <img vspace="5" hspace="5" src="Example_14.png" alt=""> <p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2023a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% Shear Force & Bending Moment Examples
 
@@ -429,9 +429,9 @@ prob.AddDistLoad([-4, -4], [14, 17]); % Constant 5N/m downwards from 12m to 18m
 % Solve the problem
 prob.Solve()
 
-%%     Example(5)
+%%     Example(4)
 %Problem Name
-Name = 'Example 5';
+Name = 'Example 4';
 % Length and Supports
 Length = 20; Supports = [6,20]; % length  = 20m, supports at 5m and 20m;
 prob = SFBMProb(Name, Length, Supports);
@@ -451,9 +451,9 @@ prob.AddDistLoad([-4, -2, -4],[14, 16, 18]); % Quadratic profile distributed dow
 prob.Solve()
 
 
-%%     Example(6)
+%%     Example(5)
 %Problem Name
-Name = 'Example 6';
+Name = 'Example 5';
 % Length and Supports
 Length = 20; Supports = [6,20]; % length  = 20m, supports at 5m and 20m;
 prob = SFBMProb(Name, Length, Supports);
@@ -474,7 +474,7 @@ prob.AddDistLoad([-2, -4],[16, 18]); % Linear profile downwards from 16m to 18m
 % Solve the problem
 prob.Solve()
 
-%%     Example(7)
+%%     Example(6)
 %Problem Name
 Name = 'Wikipedia';
 Length = 50; Supports = 50;
